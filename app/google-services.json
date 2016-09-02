@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "799689054659",
+    "firebase_url": "https://myfirstfirebaseauth.firebaseio.com",
+    "project_id": "myfirstfirebaseauth",
+    "storage_bucket": "myfirstfirebaseauth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:799689054659:android:42e8432d0265195c",
+        "android_client_info": {
+          "package_name": "com.nadavrozen.myfirebaseauth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "799689054659-dr23nvsatlfk6cbnerfe0lc5pv8icla9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKgYg2RDEK4XSA1ZSYmEK5Q_IM2Zhdf5A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
