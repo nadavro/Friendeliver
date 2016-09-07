@@ -21,7 +21,7 @@ public class FirebaseHelper {
         }
         else{
             try {
-                db.child("User").child(firebaseUser.getUid()).setValue(user);
+                db.child("User").child(firebaseUser.getUid()).setValue(user);//maybe the problem is here!!
                 saved = true;
             }
             catch (DatabaseException e){

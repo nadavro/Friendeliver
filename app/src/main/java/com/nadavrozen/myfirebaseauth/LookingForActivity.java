@@ -1,39 +1,279 @@
 package com.nadavrozen.myfirebaseauth;
 
-import android.support.v7.app.AppCompatActivity;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.location.places.Places;
+import com.android.volley.Request.Method;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-import android.support.v4.app.FragmentActivity;
 
 /**
  * The Looking-for-a-deliver activity
  */
-public class LookingForActivity extends FragmentActivity
-        implements OnConnectionFailedListener {
-    private GoogleApiClient mGoogleApiClient;
+public class LookingForActivity extends AppCompatActivity implements View.OnClickListener {
+    String url;
+    private static final String TAG_RESULT = "predictions";
+    JSONObject json;
+    String browserKey = "AIzaSyBeUg81xPA5e8XUqjoAHcoEPLe3bpYSprg";
 
+
+    AutoCompleteTextView auto_tvOrigin ;
+    ArrayList<String> names;
+    ArrayList<String> namesDest;
+    ArrayAdapter<String> adapter;
+    ArrayAdapter<String> adapter2;
+    AutoCompleteTextView auto_tvDest;
+
+    private EditText shortDesc;
+    private Button findButton;
+    private FirebaseAuth firebaseAuth;
+    FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_looking_for);
+        firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser() == null){
+            finish();
+            startActivity(new Intent(this,ProfileActivity.class));
+        }
 
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .enableAutoManage(this, this)
-                .build();
+        user = firebaseAuth.getCurrentUser();
+
+        auto_tvOrigin = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView1);
+        auto_tvDest = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
+        shortDesc = (EditText)findViewById(R.id.descriptionEditText);
+        findButton = (Button)findViewById(R.id.findButton);
+        auto_tvOrigin.setThreshold(0);
+        auto_tvDest.setThreshold(0);
+        names = new ArrayList<String>();
+        namesDest = new ArrayList<String>();
+
+        auto_tvOrigin .addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+
+                if (s.toString().length() <= 30) {
+                    names = new ArrayList<String>();
+                    updateList(s.toString());
+                }
+
+            }
+        });
+
+        auto_tvDest.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+
+                if (s.toString().length() <= 30) {
+                    namesDest = new ArrayList<String>();
+                    updateList2(s.toString());
+                }
+
+            }
+        });
+
+
+
+        //Now what?!
+        findButton.setOnClickListener(this);
+
 
     }
 
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    public void updateList2(String place) {
+        String input = "";
+        try {
+            input = "input=" + URLEncoder.encode(place, "utf-8");
+        } catch (UnsupportedEncodingException e1) {
+            e1.printStackTrace();
+        }
 
+        String output = "json";
+        String parameter = input + "&types=geocode&sensor=true&key="
+                + browserKey;
+
+        url = "https://maps.googleapis.com/maps/api/place/autocomplete/"
+                + output + "?" + parameter;
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Method.GET, url,
+                null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+                    Log.v("HERE",response.toString());
+                    JSONArray ja = response.getJSONArray(TAG_RESULT);
+
+                    for (int i = 0; i < ja.length(); i++) {
+                        //--???----
+                        JSONObject c = ja.getJSONObject(i);
+                        String description = c.getString("description");
+                        Log.d("description", description);
+                        namesDest.add(description);
+                    }
+
+                    adapter2 = new ArrayAdapter<String>(
+                            getApplicationContext(),
+                            android.R.layout.simple_list_item_1, namesDest) {
+                        @Override
+                        public View getView(int position,
+                                            View convertView, ViewGroup parent) {
+                            View view = super.getView(position,
+                                    convertView, parent);
+                            TextView text = (TextView) view
+                                    .findViewById(android.R.id.text1);
+                            text.setTextColor(Color.BLACK);
+                            return view;
+                        }
+                    };
+                    auto_tvDest.setAdapter(adapter2);
+                    adapter2.notifyDataSetChanged();
+                } catch (Exception e) {
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        MyApplication.getInstance().addToReqQueue(jsonObjReq, "jreq");
+    }
+
+
+    public void updateList(String place) {
+        String input = "";
+
+        try {
+            input = "input=" + URLEncoder.encode(place, "utf-8");
+        } catch (UnsupportedEncodingException e1) {
+            e1.printStackTrace();
+        }
+
+        String output = "json";
+        String parameter = input + "&types=geocode&sensor=true&key="
+                + browserKey;
+
+        url = "https://maps.googleapis.com/maps/api/place/autocomplete/"
+                + output + "?" + parameter;
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Method.GET, url,
+                null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+                    Log.v("HERE",response.toString());
+                    JSONArray ja = response.getJSONArray(TAG_RESULT);
+
+                    for (int i = 0; i < ja.length(); i++) {
+                        //--???----
+                        JSONObject c = ja.getJSONObject(i);
+                        String description = c.getString("description");
+                        Log.d("description", description);
+                        names.add(description);
+                    }
+
+                    adapter = new ArrayAdapter<String>(
+                            getApplicationContext(),
+                            android.R.layout.simple_list_item_1, names) {
+                        @Override
+                        public View getView(int position,
+                                            View convertView, ViewGroup parent) {
+                            View view = super.getView(position,
+                                    convertView, parent);
+                            TextView text = (TextView) view
+                                    .findViewById(android.R.id.text1);
+                            text.setTextColor(Color.BLACK);
+                            return view;
+                        }
+                    };
+                    auto_tvOrigin.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        MyApplication.getInstance().addToReqQueue(jsonObjReq, "jreq");
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == findButton){
+            String strOrigin = auto_tvOrigin.getText().toString();
+            String strDest = auto_tvDest.getText().toString();
+            String desc = shortDesc.getText().toString();
+
+            if (strOrigin.length()==0){
+                Toast.makeText(LookingForActivity.this,
+                        "please select an origin for the delivery",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (strDest.length()==0){
+                Toast.makeText(LookingForActivity.this,
+                        "please select a destination for the delivery",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (desc.length()==0){
+                Toast.makeText(LookingForActivity.this,
+                        "Please specify what to you want to deliver",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Delivery delivery = new Delivery(strOrigin,strDest,desc,user);
+        }
     }
 }

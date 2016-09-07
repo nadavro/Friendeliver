@@ -18,7 +18,8 @@
 
         <EditText
             android:layout_margin="15dp"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
+
             android:hint="First Name:"
             android:id="@+id/firstName"
             android:layout_width="match_parent"
@@ -27,56 +28,14 @@
         </EditText>
         <EditText
             android:layout_margin="15dp"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             android:hint="Last Name:"
             android:id="@+id/lastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
         </EditText>
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="4"
-            >
 
-
-            <EditText
-                android:maxLength="4"
-
-                android:id="@+id/year"
-                android:hint="yyyy"
-                android:inputType="number"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-
-            <EditText
-                android:maxLength="2"
-                android:hint="mm"
-                android:id="@+id/month"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_weight="1"/>
-
-            <EditText
-                android:maxLength="2"
-                android:hint="dd"
-                android:id="@+id/day"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Date of Birth" />
-        </LinearLayout>
         <EditText
             android:hint="Date of Birth"
             android:layout_margin="15dp"

@@ -1,5 +1,6 @@
 package com.nadavrozen.myfirebaseauth;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +15,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -45,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private DatabaseReference db;
     FirebaseHelper firebaseHelper;
     private FirebaseAuth firebaseAuth;
-    private static final String FIREBASE_URL = "https://myfirstfirebaseauth.firebaseio.com/";
+    private static final String FIREBASE_URL = "https://myfirstfirebaseauth.firebaseio.com";
     private Firebase ref;
 
     @Override
@@ -74,16 +77,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editTextPassword = (EditText)findViewById(R.id.editTextPassword);
         textViewSignin = (TextView)findViewById(R.id.textViewSignin);
 
-        year = (EditText)findViewById(R.id.year);
-        year.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
-        year.setTransformationMethod(new NumericKeyBoardTransformationMethod());
-        month = (EditText)findViewById(R.id.month);
-        month.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
-        month.setTransformationMethod(new NumericKeyBoardTransformationMethod());
-        day = (EditText)findViewById(R.id.day);
-        day.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
-        day.setTransformationMethod(new NumericKeyBoardTransformationMethod());
-
 
         buttonRegister.setOnClickListener(this);
         textViewSignin.setOnClickListener(this);
@@ -105,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void registerUser() {
         final String email = editTextEmail.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim();
+        final String password = editTextPassword.getText().toString().trim();
         final String first = firstName.getText().toString().trim();
         final String last = lastName.getText().toString().trim();
         final String dob = birthday.getText().toString();
@@ -149,7 +142,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onComplete(Task<AuthResult> task) {
                 progressDialog.hide();
                 if (task.isSuccessful()) {
-                    WriteNewUser(task.getResult().getUser(),first+" "+last,dob,email);
+                    WriteNewUser(task.getResult().getUser(), first + " " + last, dob, email);
+//                    Firebase ref = new Firebase(FIREBASE_URL);
+//                    ref.authWithPassword(email, password, new Firebase.AuthResultHandler() {
+//                        @Override
+//                        public void onAuthenticated(AuthData authData) {
+//                            System.out.println("User ID: " + authData.getUid() + ", Provider: " + authData.getProvider());
+//                        }
+//                        @Override
+//                        public void onAuthenticationError(FirebaseError firebaseError) {
+//                            // there was an error
+//                        }
+//                    });
                     //firebaseHelper.save(new User(first,dob,email));
                     //finally, the user is registered!
                     finish();
@@ -167,5 +171,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void WriteNewUser(FirebaseUser user, String name, String dob, String email) {
         User myUser = new User(name,dob,email);
         firebaseHelper.save(user,myUser);
+
     }
 }

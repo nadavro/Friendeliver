@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nadavrozen.myfirebaseauth">
-
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <application>
-    <meta-data
-        android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyBZK1lrBQdjw4NB0kMsRbAeZSRqkq4e1FM"/>
+    <application
+        android:name="com.nadavrozen.myfirebaseauth.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyBZK1lrBQdjw4NB0kMsRbAeZSRqkq4e1FM"/>
+
+        <activity
+
+            android:name=".MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +28,9 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".DeliverActivity" />
-        <activity android:name=".LookingForActivity"></activity>
+        <activity android:name=".LookingForActivity">
+
+        </activity>
     </application>
 
 </manifest>
