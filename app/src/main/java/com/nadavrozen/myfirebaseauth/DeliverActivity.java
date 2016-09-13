@@ -34,6 +34,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -66,6 +67,7 @@ public class DeliverActivity extends AppCompatActivity implements View.OnClickLi
     private ArrayAdapter<String> adapter;
     private Button postButton;
     private DatabaseReference mDatabase;
+    User me;
 
 
     @Override
@@ -74,10 +76,25 @@ public class DeliverActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_deliver);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         if (firebaseAuth.getCurrentUser() == null){
             finish();
             startActivity(new Intent(this,ProfileActivity.class));
         }
+        String key = firebaseAuth.getCurrentUser().getUid();
+        mDatabase.child("User").child(key).addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+            @Override
+            public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
+                me = dataSnapshot.getValue(User.class);
+                //String s = userName.substring(0,userName.lastIndexOf(" "));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         postButton = (Button)findViewById(R.id.findButton);
         user = firebaseAuth.getCurrentUser();
         depart = (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView1);
@@ -309,9 +326,11 @@ public class DeliverActivity extends AppCompatActivity implements View.OnClickLi
      */
     private void writeNewDeliverUser(String dateStr, String arriveStr, String departStr,
                                      String arriveAtStr, String departAtStr, String uid) {
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        DeliverUser deliverUser = new DeliverUser(dateStr,arriveStr,departStr,arriveAtStr,
+
+        //System.out.println(me.getFullName());
+        DeliverUser deliverUser = new DeliverUser(me,dateStr,arriveStr,departStr,arriveAtStr,
                 departAtStr,uid);
+        //System.out.println(deliverUser.getFullName());
         mDatabase.child("DeliverUser").push().setValue(deliverUser);
 
 

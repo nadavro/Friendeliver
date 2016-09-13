@@ -7,7 +7,7 @@ public class User {
 
         private String email;
         private String birthday;
-        private String fullName;
+         String fullName;
 
         public User() {}
 
@@ -17,8 +17,15 @@ public class User {
             this.email = email;
         }
 
-        public String getBirthday() {
-            return birthday;
+    public User(User me) {
+        this.email = me.email;
+        this.birthday = me.birthday;
+        this.fullName = me.fullName;
+    }
+
+    public String getBirthday() {
+        System.out.println(birthday);
+        return birthday;
         }
 
         public String getFullName() {

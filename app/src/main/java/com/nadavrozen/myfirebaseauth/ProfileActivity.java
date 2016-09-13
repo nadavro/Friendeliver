@@ -83,11 +83,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             startActivity(new Intent(this,LoginActivity.class));
         }
 
+        //want-to-be-a-deliver guy activity
         if (v == wantToDeliverButton){
-            finish();
+
             startActivity(new Intent(this,DeliverActivity.class));
         }
 
+        //looking-for-delivery activity
         if (v == lookForButton){
 
             startActivity(new Intent(this,LookingForActivity.class));
