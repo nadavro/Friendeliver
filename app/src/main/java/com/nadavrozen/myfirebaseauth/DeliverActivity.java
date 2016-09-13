@@ -10,12 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -32,6 +34,8 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -60,6 +64,9 @@ public class DeliverActivity extends AppCompatActivity implements View.OnClickLi
     private ArrayList<String> names;
     private ArrayList<String> namesDest;
     private ArrayAdapter<String> adapter;
+    private Button postButton;
+    private DatabaseReference mDatabase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +78,7 @@ public class DeliverActivity extends AppCompatActivity implements View.OnClickLi
             finish();
             startActivity(new Intent(this,ProfileActivity.class));
         }
+        postButton = (Button)findViewById(R.id.findButton);
         user = firebaseAuth.getCurrentUser();
         depart = (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView1);
         arrive = (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView2);
@@ -137,7 +145,7 @@ public class DeliverActivity extends AppCompatActivity implements View.OnClickLi
         date.setOnClickListener(this);
         departAt.setOnClickListener(this);
         arrivesAt.setOnClickListener(this);
-
+        postButton.setOnClickListener(this);
     }
     public void updateList(String place, final int i) {
         String input = "";
@@ -225,6 +233,8 @@ public class DeliverActivity extends AppCompatActivity implements View.OnClickLi
                 }
             }, mYear, mMonth, mDay);
             mDatePicker.setTitle("Select Date");
+            mDatePicker.getDatePicker().setCalendarViewShown(false);
+
             mDatePicker.show();
 
         }
@@ -259,6 +269,53 @@ public class DeliverActivity extends AppCompatActivity implements View.OnClickLi
 
 
         }
+        if(v == postButton){
+            String dateStr = date.getText().toString();
+            String arriveStr = arrive.getText().toString();
+            String departStr = depart.getText().toString();
+            String arriveAtStr = arrivesAt.getText().toString();
+            String departAtStr = departAt.getText().toString();
+
+            if (TextUtils.isEmpty(dateStr)){
+                //date is empty
+
+            }
+            if(TextUtils.isEmpty(arriveStr)){
+
+            }
+            if(TextUtils.isEmpty(departStr)){
+
+            }
+            if(TextUtils.isEmpty(arriveAtStr)){
+
+            }
+            if(TextUtils.isEmpty(departAtStr)){
+
+            }
+            //Now, we can add new Deliver to the database
+            writeNewDeliverUser(dateStr,arriveStr,departStr,
+                    arriveAtStr,departAtStr,user.getUid());
+        }
+    }
+
+    /**
+     * Creating and writing new Deliver to the database
+     * @param dateStr - the date the deliver depart
+     * @param arriveStr - when he arrive
+     * @param departStr - when he depart
+     * @param arriveAtStr - in what time he exactly arrive
+     * @param departAtStr - in what tine he exactly depart
+     * @param uid - the firebase userID
+     */
+    private void writeNewDeliverUser(String dateStr, String arriveStr, String departStr,
+                                     String arriveAtStr, String departAtStr, String uid) {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        DeliverUser deliverUser = new DeliverUser(dateStr,arriveStr,departStr,arriveAtStr,
+                departAtStr,uid);
+        mDatabase.child("DeliverUser").push().setValue(deliverUser);
+
 
     }
+
+
 }

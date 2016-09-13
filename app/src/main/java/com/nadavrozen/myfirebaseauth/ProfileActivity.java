@@ -45,6 +45,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mDatabase =  FirebaseDatabase.getInstance().getReference();
         //final Firebase ref = usersRef.child("User").child(user.getUid());
 
+
         //Toast.makeText(ProfileActivity.this,ref.g.toString(),Toast.LENGTH_SHORT).show();
         mDatabase.child("User").child(user.getUid()).addValueEventListener(new com.google.firebase.database.ValueEventListener() {
             @Override

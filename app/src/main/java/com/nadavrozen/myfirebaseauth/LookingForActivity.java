@@ -3,6 +3,7 @@ package com.nadavrozen.myfirebaseauth;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,8 +29,16 @@ import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 
 /**
@@ -53,11 +62,14 @@ public class LookingForActivity extends AppCompatActivity implements View.OnClic
     private Button findButton;
     private FirebaseAuth firebaseAuth;
     FirebaseUser user;
+    private DatabaseReference mDatabase;
+    private ArrayList<DeliverUser> ans;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_looking_for);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() == null){
             finish();
@@ -273,7 +285,32 @@ public class LookingForActivity extends AppCompatActivity implements View.OnClic
                         "Please specify what to you want to deliver",Toast.LENGTH_SHORT).show();
                 return;
             }
-            Delivery delivery = new Delivery(strOrigin,strDest,desc,user);
+            //writing to database
+            writeNewDelivery(strOrigin, strDest, desc);
+
+
+
+
         }
+    }
+
+
+
+
+    /**
+     * Writing new Delivery object to the firebase database
+     * @param strOrigin
+     * @param strDest
+     * @param desc
+     */
+    private void writeNewDelivery(String strOrigin, String strDest, String desc) {
+        Delivery delivery = new Delivery(strOrigin,strDest,desc,user.getUid());
+        mDatabase.child("Deliveries").push().setValue(delivery);
+        //ans = LookForUser.FindMatches(delivery,mDatabase);
+        Intent intent = new Intent(this,ResultActivity.class);
+        //Now, call the activity that show result
+        intent.putExtra("deliveryObj",delivery);
+        startActivity(intent);
+
     }
 }

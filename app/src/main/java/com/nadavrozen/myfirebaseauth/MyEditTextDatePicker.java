@@ -3,7 +3,10 @@ package com.nadavrozen.myfirebaseauth;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
@@ -49,15 +52,22 @@ public class MyEditTextDatePicker implements View.OnClickListener, DatePickerDia
                 calendar.get(Calendar.DAY_OF_MONTH));
         */
 
-        Log.v("asdsd","dssdsdsdsd");
-        DatePickerDialog d = new DatePickerDialog(_context, AlertDialog.THEME_HOLO_LIGHT, this,
-                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH));
+
+//        DatePickerDialog d = new DatePickerDialog(_context, AlertDialog.THEME_HOLO_LIGHT, this,
+//                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+//                calendar.get(Calendar.DAY_OF_MONTH));
+      // android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this,android.R.style.Theme_Material_Light_Dialog_Alert );
+
+        DatePickerDialog d = new DatePickerDialog(_context,3,this,
+               calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        d.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         DatePicker dp = d.getDatePicker();
 
         //setting the datepicker to maximum CURRENT date
         Calendar calendari = Calendar.getInstance();//get the current day
         dp.setMaxDate(calendar.getTimeInMillis());
+        //d.getDatePicker().setLayoutMode(1);
         d.show();
 
     }
