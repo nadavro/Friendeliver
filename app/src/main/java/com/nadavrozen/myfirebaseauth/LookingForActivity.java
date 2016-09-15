@@ -305,11 +305,17 @@ public class LookingForActivity extends AppCompatActivity implements View.OnClic
      */
     private void writeNewDelivery(String strOrigin, String strDest, String desc) {
         Delivery delivery = new Delivery(strOrigin,strDest,desc,user.getUid());
-        mDatabase.child("Deliveries").push().setValue(delivery);
+
+        DatabaseReference d = mDatabase.child("Delivery").push();
+        String delKey = d.getKey();
+        delivery.setKey(delKey);
+        System.out.println(delKey);
+        d.setValue(delivery);
         //ans = LookForUser.FindMatches(delivery,mDatabase);
         Intent intent = new Intent(this,ResultActivity.class);
         //Now, call the activity that show result
         intent.putExtra("deliveryObj",delivery);
+        //intent.putExtra("deliveryUid",delKey);
         startActivity(intent);
 
     }

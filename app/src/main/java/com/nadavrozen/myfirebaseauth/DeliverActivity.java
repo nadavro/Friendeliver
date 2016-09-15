@@ -82,6 +82,7 @@ public class DeliverActivity extends AppCompatActivity implements View.OnClickLi
             startActivity(new Intent(this,ProfileActivity.class));
         }
         String key = firebaseAuth.getCurrentUser().getUid();
+
         mDatabase.child("User").child(key).addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
             @Override
             public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
@@ -330,8 +331,15 @@ public class DeliverActivity extends AppCompatActivity implements View.OnClickLi
         //System.out.println(me.getFullName());
         DeliverUser deliverUser = new DeliverUser(me,dateStr,arriveStr,departStr,arriveAtStr,
                 departAtStr,uid);
+       // System.out.println("in deliveruser"+deliverUser.getKey());
         //System.out.println(deliverUser.getFullName());
-        mDatabase.child("DeliverUser").push().setValue(deliverUser);
+        DatabaseReference d =   mDatabase.child("DeliverUser").push();
+        String delKey = d.getKey();
+        deliverUser.setKey(delKey);
+        System.out.println("tititititittititi"+deliverUser.getKey());
+        d.setValue(deliverUser);
+
+
 
 
     }
