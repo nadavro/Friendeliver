@@ -162,14 +162,14 @@ public class LookingForActivity extends AppCompatActivity implements View.OnClic
 
                 try {
 
-                    Log.v("HERE",response.toString());
+                   // Log.v("HERE",response.toString());
                     JSONArray ja = response.getJSONArray(TAG_RESULT);
 
                     for (int i = 0; i < ja.length(); i++) {
                         //--???----
                         JSONObject c = ja.getJSONObject(i);
                         String description = c.getString("description");
-                        Log.d("description", description);
+                       // Log.d("description", description);
                         namesDest.add(description);
                     }
 
@@ -225,14 +225,14 @@ public class LookingForActivity extends AppCompatActivity implements View.OnClic
 
                 try {
 
-                    Log.v("HERE",response.toString());
+                    //Log.v("HERE",response.toString());
                     JSONArray ja = response.getJSONArray(TAG_RESULT);
 
                     for (int i = 0; i < ja.length(); i++) {
                         //--???----
                         JSONObject c = ja.getJSONObject(i);
                         String description = c.getString("description");
-                        Log.d("description", description);
+                       // Log.d("description", description);
                         names.add(description);
                     }
 
@@ -309,7 +309,7 @@ public class LookingForActivity extends AppCompatActivity implements View.OnClic
         DatabaseReference d = mDatabase.child("Delivery").push();
         String delKey = d.getKey();
         delivery.setKey(delKey);
-        System.out.println(delKey);
+        //System.out.println(delKey);
         d.setValue(delivery);
         //ans = LookForUser.FindMatches(delivery,mDatabase);
         Intent intent = new Intent(this,ResultActivity.class);
