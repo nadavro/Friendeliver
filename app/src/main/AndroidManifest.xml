@@ -28,7 +28,9 @@
         <activity android:name=".DeliverActivity" />
         <activity android:name=".LookingForActivity" />
         <activity android:name=".ResultActivity" />
-        <activity android:name=".MyDeliveriesActivity"></activity>
+        <activity android:name=".MyDeliveriesActivity" />
+        <activity android:name=".MyDutiesActivity" />
+        <activity android:name=".MyRequestsActivity"></activity>
     </application>
 
 </manifest>
