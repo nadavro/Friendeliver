@@ -28,6 +28,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private String userName;
     private DatabaseReference mDatabase;
     private Button myDuties;
+    private View myDeliveries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,11 +72,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         wantToDeliverButton = (Button)findViewById(R.id.deliverButton);
         lookForButton = (Button)findViewById(R.id.lookForButton);
         myDuties = (Button) findViewById(R.id.myDutiesBtn);
+        myDeliveries = (Button)findViewById(R.id.myDeliveriesBtn);
 
         myDuties.setOnClickListener(this);
         logbutton.setOnClickListener(this);
         wantToDeliverButton.setOnClickListener(this);
         lookForButton.setOnClickListener(this);
+        myDeliveries.setOnClickListener(this);
     }
 
     @Override
@@ -100,7 +103,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         if (v == myDuties) {
-            startActivity(new Intent(this,MyDutiesActivity.class));
+            startActivity(new Intent(this,MyRequestsActivity.class));
+        }
+
+        if (v == myDeliveries)
+        {
+            startActivity(new Intent(this,MyDeliveriesActivity.class));
         }
 
 

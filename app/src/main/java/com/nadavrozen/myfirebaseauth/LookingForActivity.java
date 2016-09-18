@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -64,6 +65,7 @@ public class LookingForActivity extends AppCompatActivity implements View.OnClic
     FirebaseUser user;
     private DatabaseReference mDatabase;
     private ArrayList<DeliverUser> ans;
+    private User me;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,20 @@ public class LookingForActivity extends AppCompatActivity implements View.OnClic
         }
 
         user = firebaseAuth.getCurrentUser();
+        String key = firebaseAuth.getCurrentUser().getUid();
+
+        mDatabase.child("User").child(key).addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+            @Override
+            public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
+                me = dataSnapshot.getValue(User.class);
+                //String s = userName.substring(0,userName.lastIndexOf(" "));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         auto_tvOrigin = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView1);
         auto_tvDest = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
@@ -305,18 +321,25 @@ public class LookingForActivity extends AppCompatActivity implements View.OnClic
      */
     private void writeNewDelivery(String strOrigin, String strDest, String desc) {
         Delivery delivery = new Delivery(strOrigin,strDest,desc,user.getUid());
+        LookForUser lookForUser = new LookForUser(me,delivery,user.getUid());
 
         DatabaseReference d = mDatabase.child("Delivery").push();
+        DatabaseReference ref = mDatabase.child("LookForUser").push();
         String delKey = d.getKey();
+        String lookKey = ref.getKey();
         delivery.setKey(delKey);
         //System.out.println(delKey);
         d.setValue(delivery);
+        ref.setValue(lookForUser);
         //ans = LookForUser.FindMatches(delivery,mDatabase);
         Intent intent = new Intent(this,ResultActivity.class);
         //Now, call the activity that show result
         intent.putExtra("deliveryObj",delivery);
+        intent.putExtra("lookForUserID",lookKey);
         //intent.putExtra("deliveryUid",delKey);
         startActivity(intent);
+
+
 
     }
 }
