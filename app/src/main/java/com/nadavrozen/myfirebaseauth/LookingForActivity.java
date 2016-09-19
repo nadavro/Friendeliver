@@ -324,12 +324,14 @@ public class LookingForActivity extends AppCompatActivity implements View.OnClic
         LookForUser lookForUser = new LookForUser(me,delivery,user.getUid());
 
         DatabaseReference d = mDatabase.child("Delivery").push();
-        DatabaseReference ref = mDatabase.child("LookForUser").push();
         String delKey = d.getKey();
+        d.setValue(delivery);
+        DatabaseReference ref = mDatabase.child("LookForUser").push();
+
         String lookKey = ref.getKey();
         delivery.setKey(delKey);
         //System.out.println(delKey);
-        d.setValue(delivery);
+
         ref.setValue(lookForUser);
         //ans = LookForUser.FindMatches(delivery,mDatabase);
         Intent intent = new Intent(this,ResultActivity.class);
