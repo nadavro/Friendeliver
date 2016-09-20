@@ -48,8 +48,14 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My Requests"
+            android:text="My Duties"
             android:id="@+id/myDutiesBtn"
+            android:layout_gravity="center_horizontal"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Requests"
+            android:id="@+id/myRequestBtn"
             android:layout_gravity="center_horizontal"/>
         <Button
             android:layout_width="wrap_content"
