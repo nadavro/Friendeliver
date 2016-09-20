@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (firebaseAuth.getCurrentUser() != null){
             //profile activity here
             finish();
-            startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+            startActivity(new Intent(getApplicationContext(),ContainerActivity.class));
 
         }
 
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //firebaseHelper.save(new User(first,dob,email));
                     //finally, the user is registered!
                     finish();
-                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                    startActivity(new Intent(getApplicationContext(), ContainerActivity.class));
                     //Toast.makeText(MainActivity.this, "Congratulations! you have been registered successfully!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(MainActivity.this, "Register failed", Toast.LENGTH_SHORT).show();

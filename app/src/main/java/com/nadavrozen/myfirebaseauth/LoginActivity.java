@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (firebaseAuth.getCurrentUser() != null){
             //profile activity here
             finish();
-            startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+            startActivity(new Intent(getApplicationContext(),ContainerActivity.class));
 
         }
         progressDialog = new ProgressDialog(this);
@@ -90,10 +90,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 if (task.isSuccessful()){
                     //start the profile activity
-                    finish();
-                    startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+
+                    startActivity(new Intent(getApplicationContext(),ContainerActivity.class));
                 }
-                else{
+                else
+                {
 
                 }
 

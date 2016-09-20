@@ -9,14 +9,17 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -45,7 +48,7 @@ import com.google.firebase.database.ValueEventListener;
 /**
  * The Looking-for-a-deliver activity
  */
-public class LookingForActivity extends AppCompatActivity implements View.OnClickListener {
+public class LookingForActivity extends Fragment implements View.OnClickListener {
     String url;
     private static final String TAG_RESULT = "predictions";
     JSONObject json;
@@ -67,16 +70,18 @@ public class LookingForActivity extends AppCompatActivity implements View.OnClic
     private ArrayList<DeliverUser> ans;
     private User me;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_looking_for);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_looking_for, container, false);
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_looking_for);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
-        if (firebaseAuth.getCurrentUser() == null){
-            finish();
-            startActivity(new Intent(this,ProfileActivity.class));
-        }
+//        if (firebaseAuth.getCurrentUser() == null){
+//            finish();
+//            startActivity(new Intent(this,ProfileActivity.class));
+//        }
 
         user = firebaseAuth.getCurrentUser();
         String key = firebaseAuth.getCurrentUser().getUid();
@@ -94,10 +99,10 @@ public class LookingForActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
-        auto_tvOrigin = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView1);
-        auto_tvDest = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
-        shortDesc = (EditText)findViewById(R.id.descriptionEditText);
-        findButton = (Button)findViewById(R.id.findButton);
+        auto_tvOrigin = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteTextView1);
+        auto_tvDest = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteTextView2);
+        shortDesc = (EditText)view.findViewById(R.id.descriptionEditText);
+        findButton = (Button)view.findViewById(R.id.findButton);
         auto_tvOrigin.setThreshold(0);
         auto_tvDest.setThreshold(0);
         names = new ArrayList<String>();
@@ -152,6 +157,7 @@ public class LookingForActivity extends AppCompatActivity implements View.OnClic
         //Now what?!
         findButton.setOnClickListener(this);
 
+        return view;
 
     }
 
@@ -190,7 +196,7 @@ public class LookingForActivity extends AppCompatActivity implements View.OnClic
                     }
 
                     adapter2 = new ArrayAdapter<String>(
-                            getApplicationContext(),
+                            getActivity().getApplicationContext(),
                             android.R.layout.simple_list_item_1, namesDest) {
                         @Override
                         public View getView(int position,
@@ -253,7 +259,7 @@ public class LookingForActivity extends AppCompatActivity implements View.OnClic
                     }
 
                     adapter = new ArrayAdapter<String>(
-                            getApplicationContext(),
+                           getActivity().getApplicationContext(),
                             android.R.layout.simple_list_item_1, names) {
                         @Override
                         public View getView(int position,
@@ -287,17 +293,17 @@ public class LookingForActivity extends AppCompatActivity implements View.OnClic
             String desc = shortDesc.getText().toString();
 
             if (strOrigin.length()==0){
-                Toast.makeText(LookingForActivity.this,
+                Toast.makeText(getActivity(),
                         "please select an origin for the delivery",Toast.LENGTH_SHORT).show();
                 return;
             }
             if (strDest.length()==0){
-                Toast.makeText(LookingForActivity.this,
+                Toast.makeText(getActivity(),
                         "please select a destination for the delivery",Toast.LENGTH_SHORT).show();
                 return;
             }
             if (desc.length()==0){
-                Toast.makeText(LookingForActivity.this,
+                Toast.makeText(getActivity(),
                         "Please specify what to you want to deliver",Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -334,12 +340,20 @@ public class LookingForActivity extends AppCompatActivity implements View.OnClic
 
         ref.setValue(lookForUser);
         //ans = LookForUser.FindMatches(delivery,mDatabase);
-        Intent intent = new Intent(this,ResultActivity.class);
-        //Now, call the activity that show result
-        intent.putExtra("deliveryObj",delivery);
-        intent.putExtra("lookForUserID",lookKey);
-        //intent.putExtra("deliveryUid",delKey);
-        startActivity(intent);
+        Fragment fragment = new ResultActivity();
+
+        final Bundle bundle = new Bundle();
+        bundle.putParcelable("deliveryObj",delivery);
+        bundle.putString("lookForUserID",lookKey);
+        fragment.setArguments(bundle);
+
+        getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+//        Intent intent = new Intent(this,ResultActivity.class);
+//        //Now, call the activity that show result
+//        intent.putExtra("deliveryObj",delivery);
+//        intent.putExtra("lookForUserID",lookKey);
+//        //intent.putExtra("deliveryUid",delKey);
+//        startActivity(intent);
 
 
 

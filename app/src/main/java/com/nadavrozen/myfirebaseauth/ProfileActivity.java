@@ -2,10 +2,13 @@ package com.nadavrozen.myfirebaseauth;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,33 +23,33 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
+public class ProfileActivity extends Fragment implements View.OnClickListener {
     private static final String TAG = "myApp";
     private FirebaseAuth firebaseAuth;
     private TextView textView;
-    private Button logbutton,wantToDeliverButton,lookForButton;
+    private Button logbutton, wantToDeliverButton, lookForButton;
     private String userName;
     private DatabaseReference mDatabase;
     private Button myDuties;
     private View myDeliveries;
     private Button myRequests;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_profile, container, false);
+
+
         //Firebase.setAndroidContext(this);
 
-        textView = (TextView)findViewById(R.id.textView2);
+        textView = (TextView) view.findViewById(R.id.textView2);
         //Firebase usersRef = new Firebase("https://myfirstfirebaseauth.firebaseio.com");
         firebaseAuth = FirebaseAuth.getInstance();
-        if (firebaseAuth.getCurrentUser() == null){
-            finish();
-            startActivity(new Intent(this,LoginActivity.class));
-        }
+//        if (firebaseAuth.getCurrentUser() == null){
+//            finish();
+//            startActivity(new Intent(this,LoginActivity.class));
+//        }
 
         final FirebaseUser user = firebaseAuth.getCurrentUser();
-        mDatabase =  FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         //final Firebase ref = usersRef.child("User").child(user.getUid());
 
 
@@ -55,9 +58,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
                 userName = dataSnapshot.getValue(User.class).getFullName();
-                String s = userName.substring(0,userName.lastIndexOf(" "));
+                String s = userName.substring(0, userName.lastIndexOf(" "));
 
-                textView.setText("Welcome "+s);
+                textView.setText("Welcome " + s);
             }
 
             @Override
@@ -67,14 +70,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         });
 
 
-
-
-        logbutton = (Button)findViewById(R.id.buttonLogOut);
-        wantToDeliverButton = (Button)findViewById(R.id.deliverButton);
-        lookForButton = (Button)findViewById(R.id.lookForButton);
-        myDuties = (Button) findViewById(R.id.myDutiesBtn);
-        myDeliveries = (Button)findViewById(R.id.myDeliveriesBtn);
-        myRequests = (Button)findViewById(R.id.myRequestBtn);
+        logbutton = (Button) view.findViewById(R.id.buttonLogOut);
+        wantToDeliverButton = (Button) view.findViewById(R.id.deliverButton);
+        lookForButton = (Button) view.findViewById(R.id.lookForButton);
+        myDuties = (Button) view.findViewById(R.id.myDutiesBtn);
+        myDeliveries = (Button) view.findViewById(R.id.myDeliveriesBtn);
+        myRequests = (Button) view.findViewById(R.id.myRequestBtn);
 
 
         myDuties.setOnClickListener(this);
@@ -83,40 +84,37 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         lookForButton.setOnClickListener(this);
         myDeliveries.setOnClickListener(this);
         myRequests.setOnClickListener(this);
+
+        return view;
     }
 
     @Override
     public void onClick(View v) {
-        if (v == logbutton){
+        if (v == logbutton) {
             //logout
             firebaseAuth.signOut();
-            finish();
-            startActivity(new Intent(this,LoginActivity.class));
+            getActivity().finish();
+//            Fragment fragment = new LoginActivity();
+//            getFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+            getActivity().startActivity(new Intent(getActivity(), LoginActivity.class));
         }
 
         //want-to-be-a-deliver guy activity
-        if (v == wantToDeliverButton){
-
-            startActivity(new Intent(this,DeliverActivity.class));
+        if (v == wantToDeliverButton) {
+            Fragment fragment = new DeliverActivity();
+            getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+            // startActivity(new Intent(this,DeliverActivity.class));
         }
-
+//
         //looking-for-delivery activity
-        if (v == lookForButton){
+        if (v == lookForButton) {
+            Fragment fragment = new LookingForActivity();
 
-            startActivity(new Intent(this,LookingForActivity.class));
+            getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+            //startActivity(new Intent(this,LookingForActivity.class));
         }
 
-        if (v == myDuties) {
-            startActivity(new Intent(this,MyDutiesActivity.class));
-        }
 
-        if (v == myDeliveries)
-        {
-            startActivity(new Intent(this,MyDeliveriesActivity.class));
-        }
-
-        if (v == myRequests){
-            startActivity(new Intent(this,MyRequestsActivity.class));
-        }
     }
+
 }

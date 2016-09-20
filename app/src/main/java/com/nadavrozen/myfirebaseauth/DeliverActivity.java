@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,6 +14,7 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -49,7 +51,7 @@ import java.util.Calendar;
 /**
  * The want-to-be-a-deliver activity
  */
-public class DeliverActivity extends AppCompatActivity implements View.OnClickListener {
+public class DeliverActivity extends Fragment implements View.OnClickListener {
     String url;
     private static final String TAG_RESULT = "predictions";
     JSONObject json;
@@ -69,18 +71,20 @@ public class DeliverActivity extends AppCompatActivity implements View.OnClickLi
     private DatabaseReference mDatabase;
     User me;
 
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_deliver, container, false);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_deliver);
+//        @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_deliver);
 
         firebaseAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        if (firebaseAuth.getCurrentUser() == null){
-            finish();
-            startActivity(new Intent(this,ProfileActivity.class));
-        }
+//        if (firebaseAuth.getCurrentUser() == null){
+//            finish();
+//            startActivity(new Intent(this,ProfileActivity.class));
+//        }
         String key = firebaseAuth.getCurrentUser().getUid();
 
         mDatabase.child("User").child(key).addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
@@ -96,18 +100,18 @@ public class DeliverActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-        postButton = (Button)findViewById(R.id.findButton);
+        postButton = (Button)view.findViewById(R.id.findButton);
         user = firebaseAuth.getCurrentUser();
-        depart = (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView1);
-        arrive = (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView2);
+        depart = (AutoCompleteTextView)view.findViewById(R.id.autoCompleteTextView1);
+        arrive = (AutoCompleteTextView)view.findViewById(R.id.autoCompleteTextView2);
 
-        date = (EditText)findViewById(R.id.dateEditText);
+        date = (EditText)view.findViewById(R.id.dateEditText);
         date.setInputType(InputType.TYPE_NULL);
         date.setFocusable(false);
-        departAt = (EditText)findViewById(R.id.departEditText);
+        departAt = (EditText)view.findViewById(R.id.departEditText);
         departAt.setInputType(InputType.TYPE_NULL);
         departAt.setFocusable(false);
-        arrivesAt = (EditText)findViewById(R.id.arrivesEditText);
+        arrivesAt = (EditText)view.findViewById(R.id.arrivesEditText);
         arrivesAt.setInputType(InputType.TYPE_NULL);
         arrivesAt.setFocusable(false);
 
@@ -164,6 +168,8 @@ public class DeliverActivity extends AppCompatActivity implements View.OnClickLi
         departAt.setOnClickListener(this);
         arrivesAt.setOnClickListener(this);
         postButton.setOnClickListener(this);
+
+        return view;
     }
     public void updateList(String place, final int i) {
         String input = "";
@@ -201,7 +207,7 @@ public class DeliverActivity extends AppCompatActivity implements View.OnClickLi
                     }
 
                     adapter = new ArrayAdapter<String>(
-                            getApplicationContext(),
+                            getActivity().getApplicationContext(),
                             android.R.layout.simple_list_item_1, names) {
                         @Override
                         public View getView(int position,
@@ -242,7 +248,7 @@ public class DeliverActivity extends AppCompatActivity implements View.OnClickLi
             int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
             DatePickerDialog mDatePicker;
-            mDatePicker = new DatePickerDialog(DeliverActivity.this, new DatePickerDialog.OnDateSetListener() {
+            mDatePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                 public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
                     // TODO Auto-generated method stub
                     /*      Your code   to get date and time    */
@@ -261,7 +267,7 @@ public class DeliverActivity extends AppCompatActivity implements View.OnClickLi
             int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
             int minute = mcurrentTime.get(Calendar.MINUTE);
             TimePickerDialog mTimePicker;
-            mTimePicker = new TimePickerDialog(DeliverActivity.this, new TimePickerDialog.OnTimeSetListener() {
+            mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                     departAt.setText( selectedHour + ":" + selectedMinute);
@@ -276,7 +282,7 @@ public class DeliverActivity extends AppCompatActivity implements View.OnClickLi
             int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
             int minute = mcurrentTime.get(Calendar.MINUTE);
             TimePickerDialog mTimePicker;
-            mTimePicker = new TimePickerDialog(DeliverActivity.this, new TimePickerDialog.OnTimeSetListener() {
+            mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                     arrivesAt.setText( selectedHour + ":" + selectedMinute);
