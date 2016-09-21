@@ -73,17 +73,17 @@ public class ProfileActivity extends Fragment implements View.OnClickListener {
         logbutton = (Button) view.findViewById(R.id.buttonLogOut);
         wantToDeliverButton = (Button) view.findViewById(R.id.deliverButton);
         lookForButton = (Button) view.findViewById(R.id.lookForButton);
-        myDuties = (Button) view.findViewById(R.id.myDutiesBtn);
-        myDeliveries = (Button) view.findViewById(R.id.myDeliveriesBtn);
-        myRequests = (Button) view.findViewById(R.id.myRequestBtn);
+//        myDuties = (Button) view.findViewById(R.id.myDutiesBtn);
+//        myDeliveries = (Button) view.findViewById(R.id.myDeliveriesBtn);
+//        myRequests = (Button) view.findViewById(R.id.myRequestBtn);
 
 
-        myDuties.setOnClickListener(this);
+//        myDuties.setOnClickListener(this);
         logbutton.setOnClickListener(this);
         wantToDeliverButton.setOnClickListener(this);
         lookForButton.setOnClickListener(this);
-        myDeliveries.setOnClickListener(this);
-        myRequests.setOnClickListener(this);
+//        myDeliveries.setOnClickListener(this);
+//        myRequests.setOnClickListener(this);
 
         return view;
     }
