@@ -7,6 +7,7 @@ public class Request {
 
     //private LookForUser lookForUser;
     private String status = "WAITING";
+    private LookForUser lookForUser;
     private String lookUserID;
     private String delUserID;
     private String delUserUID;
@@ -23,6 +24,7 @@ public class Request {
         System.out.println("IN MY REQUEST "+deliveryID);
         this.delUserID = object.getKey();
         this.lookUserID = lookForUser.getKey();
+        this.lookForUser = lookForUser;
         this.lookUserUID = lookForUser.getUid();
         this.delUserUID = object.getUid();
     }
@@ -82,5 +84,13 @@ public class Request {
 
     public void setLookUserUID(String lookUserUID) {
         this.lookUserUID = lookUserUID;
+    }
+
+    public LookForUser getLookForUser() {
+        return lookForUser;
+    }
+
+    public void setLookForUser(LookForUser lookForUser) {
+        this.lookForUser = lookForUser;
     }
 }

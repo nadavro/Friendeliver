@@ -10,26 +10,28 @@
 
     <Button android:id="@+id/accBtn"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:gravity="center_vertical"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="15dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:text="Accept"/>
+        android:text="Accept"
+        android:background="@drawable/buttonround"
+        />
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
+        android:layout_marginRight="10dp"
         android:text="Decline"
         android:id="@+id/deceBtn"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@id/accBtn"
         android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"/>
+        android:background="@drawable/declinbtn"
+        />
 
 
     <TextView android:id="@+id/txtTitle"

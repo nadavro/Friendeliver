@@ -57,10 +57,10 @@ public class MyRequestsAdapter extends ArrayAdapter<Request> {
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new DeliveryHolder();
-//            holder.who = (TextView)row.findViewById(R.id.txtTitle);
+            holder.who = (TextView)row.findViewById(R.id.txtTitle);
             holder.what = (TextView)row.findViewById(R.id.what);
-            holder.acceptButton = (ImageButton)row.findViewById(R.id.acceptBtn);
-            holder.declineButton = (ImageButton)row.findViewById(R.id.declineBtn);
+            holder.acceptButton = (Button)row.findViewById(R.id.accBtn);
+            holder.declineButton = (Button)row.findViewById(R.id.deceBtn);
 
 
             row.setTag(holder);
@@ -70,8 +70,9 @@ public class MyRequestsAdapter extends ArrayAdapter<Request> {
             holder = (DeliveryHolder)row.getTag();
         }
 
-
-
+        this.lookForUser = reqList.get(position).getLookForUser();
+        holder.who.setText("Request from "+
+                this.reqList.get(position).getLookForUser().getUser().getFullName());
 //        final Request current = reqList.get(position);
 
 
@@ -130,20 +131,20 @@ public class MyRequestsAdapter extends ArrayAdapter<Request> {
     }
 
     private void cont(int position) {
-        DatabaseReference ref  = mDataBase.child("LookForUser").
-                child(reqList.get(position).getLookUserID());
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                LookForUser ls = dataSnapshot.getValue(LookForUser.class);
-                setHolderWhat(ls);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+//        DatabaseReference ref  = mDataBase.child("LookForUser").
+//                child(reqList.get(position).getLookUserID());
+//        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                LookForUser ls = dataSnapshot.getValue(LookForUser.class);
+//                setHolderWhat(ls);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
         DatabaseReference ref2  = mDataBase.child("DeliverUser").
                 child(reqList.get(position).getDelUserID());
         ref2.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -162,13 +163,14 @@ public class MyRequestsAdapter extends ArrayAdapter<Request> {
 
     }
 
-    public void setHolderWhat(LookForUser ls) {
-        this.lookForUser = ls;
-        //holder.what.setText("Request from "+lookForUser.getUser().getFullName());
-        //holder.who.setText(ls.getUser().getFullName());
-       // holder.who.setText(ls.getDelivery().getDesc() + " from " + ls.getDelivery().getCityDepart());
-
-    }
+//    public void setHolderWhat(LookForUser ls) {
+//        this.lookForUser = ls;
+//        System.out.println("in set holderrrrr");
+//        //holder.what.setText("Request from "+lookForUser.getUser().getFullName());
+//        //holder.who.setText(ls.getUser().getFullName());
+//
+//
+//    }
 
     public void setDelUser(DeliverUser delUser) {
         this.delUser = delUser;
@@ -181,9 +183,9 @@ public class MyRequestsAdapter extends ArrayAdapter<Request> {
         //ImageView imgIcon;
 
         TextView what;
-        ImageButton acceptButton;
-        ImageButton declineButton;
-        // TextView from;
+        Button acceptButton;
+        Button declineButton;
+        TextView who;
         //Button acceptButton;
     }
 
