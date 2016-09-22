@@ -55,8 +55,18 @@
             android:background="@drawable/buttonshape"
             />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:textSize="18dp"
+            android:id="@+id/uri"
+            android:layout_gravity="center_horizontal"
+
+            />
+
         <Button
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="10dp"
             android:text="Logout"
             android:id="@+id/buttonLogOut"
             android:layout_gravity="center_horizontal"

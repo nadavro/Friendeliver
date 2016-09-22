@@ -47,5 +47,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-places:9.4.0'
     compile 'com.mcxiaoke.volley:library:1.0.0'
     compile 'com.android.support:support-v4:23.2.0'
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 }
 apply plugin: 'com.google.gms.google-services'

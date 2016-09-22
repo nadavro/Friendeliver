@@ -45,7 +45,7 @@ public class ContainerActivity extends ActionBarActivity {
     }
 
     private void addDrawerItems() {
-        String[] osArray = { "My Profile", "My Deliveries", "Me as a Deliver","My Requests" ,"Back to First Screen" };
+        String[] osArray = { "My Profile", "My Deliveries", "My Duties","My Requests" ,"Back to First Screen" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
         mDrawerList.setAdapter(mAdapter);
 
@@ -71,7 +71,9 @@ public class ContainerActivity extends ActionBarActivity {
                 }
 
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment)
+                        .setCustomAnimations(android.R.anim.slide_in_left,
+                        android.R.anim.slide_out_right).addToBackStack(null).commit();
                 mDrawerLayout.closeDrawers();
 
             }

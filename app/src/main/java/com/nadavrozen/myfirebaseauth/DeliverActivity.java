@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
@@ -319,6 +320,11 @@ public class DeliverActivity extends Fragment implements View.OnClickListener {
             //Now, we can add new Deliver to the database
             writeNewDeliverUser(dateStr,arriveStr,departStr,
                     arriveAtStr,departAtStr,user.getUid());
+
+            Fragment fragment = new ProfileActivity();
+            getFragmentManager().beginTransaction().
+                    setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                    .replace(R.id.content_frame, fragment).addToBackStack(null).commit();
         }
     }
 
@@ -342,8 +348,17 @@ public class DeliverActivity extends Fragment implements View.OnClickListener {
         DatabaseReference d =   mDatabase.child("DeliverUser").push();
         String delKey = d.getKey();
         deliverUser.setKey(delKey);
-        System.out.println("tititititittititi"+deliverUser.getKey());
+        System.out.println("tititititittititi" + deliverUser.getKey());
         d.setValue(deliverUser);
+
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Thank you!").setMessage("Now, Other people can ask you for picking-up their" +
+                " things. Have a safe drive!").setNeutralButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        }).show();
 
 
 

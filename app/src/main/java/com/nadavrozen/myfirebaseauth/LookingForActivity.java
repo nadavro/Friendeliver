@@ -347,7 +347,9 @@ public class LookingForActivity extends Fragment implements View.OnClickListener
         bundle.putString("lookForUserID",lookKey);
         fragment.setArguments(bundle);
 
-        getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+        getFragmentManager().beginTransaction().
+                setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                .replace(R.id.content_frame, fragment).addToBackStack(null).commit();
 //        Intent intent = new Intent(this,ResultActivity.class);
 //        //Now, call the activity that show result
 //        intent.putExtra("deliveryObj",delivery);

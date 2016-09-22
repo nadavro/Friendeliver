@@ -1,5 +1,7 @@
 package com.nadavrozen.myfirebaseauth;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -63,7 +67,7 @@ public class MyRequestsActivity extends Fragment {
                     Request req = usi.getValue(Request.class);
                     req.setKey(usi.getKey());
                     System.out.println(req.getStatus());
-                    if (!req.getStatus().equals("ACCEPTED")){
+                    if (req.getStatus().equals("WAITING")){
                         tempReqList.add(req);
                     }
                     //tempReqList.add(req);
@@ -85,6 +89,40 @@ public class MyRequestsActivity extends Fragment {
         MyRequestsAdapter adapter = new MyRequestsAdapter(getActivity().getApplicationContext(),
                 R.layout.list_view_row_req, reqList);
         listView.setAdapter(adapter);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View alertLayout = inflater.inflate(R.layout.dialog_my_duties, null);
+                Request current = (Request) parent.getItemAtPosition(position);
+
+                TextView what = (TextView) alertLayout.findViewById(R.id.what);
+                TextView specAddressDepart =
+                        (TextView) alertLayout.findViewById(R.id.specAddressDepart);
+                TextView specAddressArrive =
+                        (TextView) alertLayout.findViewById(R.id.specAddressArive);
+
+                what.setText(current.getLookForUser().getDelivery().getDesc());
+                specAddressDepart.setText(current.getLookForUser().getDelivery().getStrOrigin());
+                specAddressArrive.setText(current.getLookForUser().getDelivery().getStrDest());
+
+                final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                int pos = position + 1;
+                alert.setTitle("Request #" + pos);
+                alert.setView(alertLayout);
+                alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                //dosomething();
+
+                AlertDialog dialog = alert.create();
+                dialog.show();
+                return true;
+            }
+        });
 
 
     }

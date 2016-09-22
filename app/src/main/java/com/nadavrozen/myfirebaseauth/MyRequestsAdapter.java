@@ -76,12 +76,27 @@ public class MyRequestsAdapter extends ArrayAdapter<Request> {
 //        final Request current = reqList.get(position);
 
 
+        holder.declineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DatabaseReference newPostRef2 = mDataBase.child("Request").
+                        child(reqList.get(position).getKey()).child("status");
+                newPostRef2.setValue("DECLINED");
+
+                reqList.remove(position);
+                notifyDataSetChanged();
+
+
+            }
+        });
 
 
        // holder.what.setText(current.getLookForUser().getUser().fullName);
         holder.acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 DatabaseReference newPostRef1 = mDataBase.child("Delivery").
                         child(reqList.get(position).getDeliveryID()).child("status");
                 newPostRef1.setValue("ACCEPTED");
@@ -105,11 +120,13 @@ public class MyRequestsAdapter extends ArrayAdapter<Request> {
                         child(reqList.get(position).getDeliveryID()).child("deliverUserUid");
                 newPostRef5.setValue(reqList.get(position).getDelUserID());
 
-                Duty duty = new Duty(lookForUser,delUser);
+                Duty duty = new Duty(reqList.get(position).getLookForUser(),delUser);
                 DatabaseReference newPostRef6 = mDataBase.child("Duty").push();
 
                 newPostRef6.setValue(duty);
 
+                reqList.remove(position);
+                notifyDataSetChanged();
 
                 //accepting a request
 

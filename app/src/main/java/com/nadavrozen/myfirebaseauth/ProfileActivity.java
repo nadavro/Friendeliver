@@ -102,7 +102,9 @@ public class ProfileActivity extends Fragment implements View.OnClickListener {
         //want-to-be-a-deliver guy activity
         if (v == wantToDeliverButton) {
             Fragment fragment = new DeliverActivity();
-            getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+            getFragmentManager().beginTransaction().
+                    setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                    .replace(R.id.content_frame, fragment).addToBackStack(null).commit();
             // startActivity(new Intent(this,DeliverActivity.class));
         }
 //
@@ -110,7 +112,9 @@ public class ProfileActivity extends Fragment implements View.OnClickListener {
         if (v == lookForButton) {
             Fragment fragment = new LookingForActivity();
 
-            getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+            getFragmentManager().beginTransaction()
+                    .setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right)
+                    .replace(R.id.content_frame, fragment).addToBackStack(null).commit();
             //startActivity(new Intent(this,LookingForActivity.class));
         }
 

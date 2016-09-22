@@ -6,7 +6,7 @@ package com.nadavrozen.myfirebaseauth;
 public class User {
 
         private String email;
-        private String birthday;
+        private String birthday = "";
          String fullName;
 
         public User() {}

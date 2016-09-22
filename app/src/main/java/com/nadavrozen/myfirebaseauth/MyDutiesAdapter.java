@@ -39,6 +39,8 @@ public class MyDutiesAdapter extends ArrayAdapter<Duty> {
             holder = new DutyHolder();
 
             holder.txtTitle = (TextView)row.findViewById(R.id.txtTitle);
+            holder.fromto = (TextView)row.findViewById(R.id.fromto);
+            holder.dateto = (TextView)row.findViewById(R.id.dateto);
 
             row.setTag(holder);
         }
@@ -48,10 +50,14 @@ public class MyDutiesAdapter extends ArrayAdapter<Duty> {
         }
 
         Duty duty = data.get(position);
-        holder.txtTitle.setText(duty.getDelUser().getDateStr()+ "  "+
-                duty.getLookForUser().getDelivery().getCityDepart()+" To "
-                +duty.getLookForUser().getDelivery().getCityArrive()+"  "+
-                duty.getLookForUser().getUser().getFullName());
+//        holder.txtTitle.setText(duty.getDelUser().getDateStr()+ "  "+
+//                duty.getLookForUser().getDelivery().getCityDepart()+" To "
+//                +duty.getLookForUser().getDelivery().getCityArrive()+"  "+
+//                duty.getLookForUser().getUser().getFullName());
+        holder.txtTitle.setText(duty.getLookForUser().getUser().getFullName());
+        holder.fromto.setText("From "+duty.getLookForUser().getDelivery().getCityDepart()+" to "+
+                duty.getLookForUser().getDelivery().getCityArrive());
+        holder.dateto.setText("On "+duty.getDelUser().getDateStr());
         //holder.txtTitle.setText(weather.title);
         //holder.imgIcon.setImageResource(weather.icon);
 
@@ -62,5 +68,7 @@ public class MyDutiesAdapter extends ArrayAdapter<Duty> {
     {
         ImageView imgIcon;
         TextView txtTitle;
+        TextView fromto;
+        TextView dateto;
     }
 }
