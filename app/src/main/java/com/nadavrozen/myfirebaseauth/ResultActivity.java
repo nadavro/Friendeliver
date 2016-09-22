@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
@@ -121,22 +123,54 @@ public class ResultActivity extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position,
                                     long arg3) {
-                DeliverUser currentDeliver = (DeliverUser) adapter.getItemAtPosition(position);
-                new AlertDialog.Builder(getActivity())
-                        .setMessage(currentDeliver.getUser().getFullName()+" is going from "+
-                                currentDeliver.getDepartStr()+" at "+currentDeliver.getDepartAtStr()
-                                +" to "+currentDeliver.getArriveStr()+" at "+currentDeliver.getDepartAtStr()
-                                +" on "+ currentDeliver.getDateStr())
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View alertLayout = inflater.inflate(R.layout.result_dialog, null);
+                final DeliverUser currentDeliver = (DeliverUser) adapter.getItemAtPosition(position);
+                TextView date = (TextView) alertLayout.findViewById(R.id.dateDeliver);
+                TextView specAddressDepart =
+                        (TextView) alertLayout.findViewById(R.id.from);
+                TextView specAddressArrive =
+                        (TextView) alertLayout.findViewById(R.id.to);
+                Button showProfileButton = (Button) alertLayout.findViewById(R.id.showProfile);
+
+                date.setText(currentDeliver.getDateStr());
+                specAddressDepart.setText(currentDeliver.getDepartStr() + " at "+currentDeliver.getDepartAtStr());
+                specAddressArrive.setText(currentDeliver.getArriveStr()+ " at "+currentDeliver.getArriveAtStr());
+
+                showProfileButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Showing the user profile screen
+                        Fragment fragment = new UserProfile();
+                        final Bundle bundle = new Bundle();
+                        bundle.putParcelable("User",currentDeliver.getUser());
+
+                        fragment.setArguments(bundle);
+                        getFragmentManager().beginTransaction().
+                                setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                                .replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+
+                    }
+                });
+                final android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(getActivity());
+                int pos = position + 1;
+                //alert.setTitle("Request #" + pos);
+                alert.setView(alertLayout);
+                alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                //dosomething();
+
+                android.app.AlertDialog dialog = alert.create();
+                dialog.show();
 
 
-                                dialog.cancel();
-                            }
-                        }).show(); //show.getWindow()..to change the size of the alert-dialog window
-                
-                // assuming string and if you want to get the value on click of list item
-                // do what you intend to do on click of listview row
+//
+//
+
             }
         });
     }

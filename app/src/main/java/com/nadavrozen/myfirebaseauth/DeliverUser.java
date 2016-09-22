@@ -1,5 +1,8 @@
 package com.nadavrozen.myfirebaseauth;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
@@ -7,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by Israel Rozen on 06/09/2016.
  */
-public class DeliverUser{
+public class DeliverUser implements Parcelable {
 
     private User user;
     private String email;
@@ -30,6 +33,35 @@ public class DeliverUser{
     public DeliverUser(){
 
     }
+
+    protected DeliverUser(Parcel in) {
+        email = in.readString();
+        birthday = in.readString();
+        name = in.readString();
+        cityArrive = in.readString();
+        cityDepart = in.readString();
+        uid = in.readString();
+        dateStr = in.readString();
+        arriveStr = in.readString();
+        departStr = in.readString();
+        arriveAtStr = in.readString();
+        departAtStr = in.readString();
+        key = in.readString();
+        deliveries = in.createTypedArrayList(Delivery.CREATOR);
+        request = in.readString();
+    }
+
+    public static final Creator<DeliverUser> CREATOR = new Creator<DeliverUser>() {
+        @Override
+        public DeliverUser createFromParcel(Parcel in) {
+            return new DeliverUser(in);
+        }
+
+        @Override
+        public DeliverUser[] newArray(int size) {
+            return new DeliverUser[size];
+        }
+    };
 
     @Exclude
     public String getKey(){
@@ -165,5 +197,28 @@ public class DeliverUser{
 
     public void setRequests(ArrayList<Request> requests) {
         Requests = requests;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(email);
+        dest.writeString(birthday);
+        dest.writeString(name);
+        dest.writeString(cityArrive);
+        dest.writeString(cityDepart);
+        dest.writeString(uid);
+        dest.writeString(dateStr);
+        dest.writeString(arriveStr);
+        dest.writeString(departStr);
+        dest.writeString(arriveAtStr);
+        dest.writeString(departAtStr);
+        dest.writeString(key);
+        dest.writeTypedList(deliveries);
+        dest.writeString(request);
     }
 }

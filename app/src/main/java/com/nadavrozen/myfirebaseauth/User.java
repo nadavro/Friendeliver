@@ -1,9 +1,12 @@
 package com.nadavrozen.myfirebaseauth;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Israel Rozen on 01/09/2016.
  */
-public class User {
+public class User implements Parcelable {
 
         private String email;
         private String birthday = "";
@@ -25,6 +28,25 @@ public class User {
         this.fullName = me.fullName;
     }
 
+    protected User(Parcel in) {
+        email = in.readString();
+        birthday = in.readString();
+        fullName = in.readString();
+        uri = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
+
     public String getBirthday() {
         System.out.println(birthday);
         return birthday;
@@ -45,5 +67,18 @@ public class User {
 
     public void setUri(String uri) {
         this.uri = uri;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(email);
+        dest.writeString(birthday);
+        dest.writeString(fullName);
+        dest.writeString(uri);
     }
 }
