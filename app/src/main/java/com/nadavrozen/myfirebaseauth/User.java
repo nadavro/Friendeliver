@@ -8,13 +8,15 @@ public class User {
         private String email;
         private String birthday = "";
          String fullName;
+        private String uri = "";
 
         public User() {}
 
-        public User(String fullName, String birthday , String email) {
+        public User(String fullName, String birthday , String email, String uri) {
             this.fullName = fullName;
             this.birthday = birthday;
             this.email = email;
+            this.uri = uri;
         }
 
     public User(User me) {
@@ -34,5 +36,14 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 }

@@ -17,6 +17,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
@@ -141,7 +142,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         String email = user.getEmail();
 
 
-                        User myUser = new User(name, "", email);
+                        User myUser = new User(name, "", email, Profile.getCurrentProfile().getLinkUri().toString());
                         firebaseHelper.save(user,myUser);
 
                         startActivity(new Intent(getApplicationContext(), ContainerActivity.class));
