@@ -156,9 +156,9 @@ public class ProfileActivity extends Fragment implements View.OnClickListener {
         }
 
         if (v == uri){
-            Uri uri = Uri.parse(me.getUri()); // missing 'http://' will cause crashed
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(intent);
+//            Uri uri = Uri.parse(me.getUri()); // missing 'http://' will cause crashed
+//            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+//            startActivity(intent);
         }
     }
 

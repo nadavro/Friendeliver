@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void WriteNewUser(FirebaseUser user, String name, String dob, String email) {
-        User myUser = new User(name,dob,email, "");
+        User myUser = new User(name,dob,email, 0);
         firebaseHelper.save(user,myUser);
 
     }

@@ -125,6 +125,7 @@ public class ResultActivity extends Fragment {
                                     long arg3) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View alertLayout = inflater.inflate(R.layout.result_dialog, null);
+                final android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(getActivity());
                 final DeliverUser currentDeliver = (DeliverUser) adapter.getItemAtPosition(position);
                 TextView date = (TextView) alertLayout.findViewById(R.id.dateDeliver);
                 TextView specAddressDepart =
@@ -143,16 +144,17 @@ public class ResultActivity extends Fragment {
                         //Showing the user profile screen
                         Fragment fragment = new UserProfile();
                         final Bundle bundle = new Bundle();
-                        bundle.putParcelable("User",currentDeliver.getUser());
+                        bundle.putParcelable("User",currentDeliver);
 
                         fragment.setArguments(bundle);
                         getFragmentManager().beginTransaction().
                                 setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                                 .replace(R.id.content_frame, fragment).addToBackStack(null).commit();
 
+
                     }
                 });
-                final android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(getActivity());
+
                 int pos = position + 1;
                 //alert.setTitle("Request #" + pos);
                 alert.setView(alertLayout);

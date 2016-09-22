@@ -3,6 +3,7 @@ package com.nadavrozen.myfirebaseauth;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -140,9 +141,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         String name = user.getDisplayName();
                         String email = user.getEmail();
+                        Uri imageUri = user.getPhotoUrl();
+                        // TODO: get facebook photo
+
+                        //Profile.getCurrentProfile().getLinkUri().toString()
+                        // 1 -> is from facebook login
+                        // 0 -> from regular login
+                        User myUser = new User(name, "", email,1);
+                        myUser.setFacebookLink(Profile.getCurrentProfile().getLinkUri().toString());
+                        myUser.setUriImage(String.valueOf(imageUri));
 
 
-                        User myUser = new User(name, "", email, Profile.getCurrentProfile().getLinkUri().toString());
+
+
                         firebaseHelper.save(user,myUser);
 
                         startActivity(new Intent(getApplicationContext(), ContainerActivity.class));

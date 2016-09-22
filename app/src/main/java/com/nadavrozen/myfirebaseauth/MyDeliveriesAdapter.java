@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 
 public class MyDeliveriesAdapter extends ArrayAdapter<LookForUser> {
 
+    private DatabaseReference mDatabase;
     Context context;
     int layoutResourceId;
     ArrayList<LookForUser> deliveries;
@@ -33,9 +35,10 @@ public class MyDeliveriesAdapter extends ArrayAdapter<LookForUser> {
         this.layoutResourceId = layoutResourceId;
         this.context = context;
         this.deliveries = deliveries;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View row = convertView;
         DeliveryHolder holder = null;
 
@@ -45,7 +48,10 @@ public class MyDeliveriesAdapter extends ArrayAdapter<LookForUser> {
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new DeliveryHolder();
-            holder.what = (TextView)row.findViewById(R.id.txtTitle);
+            holder.what = (TextView)row.findViewById(R.id.what);
+            holder.path = (TextView)row.findViewById(R.id.path);
+            holder.deleteButton = (Button)row.findViewById(R.id.deleteBtn);
+
            // holder.from = (TextView)row.findViewById(R.id.fromWhere);
 
 
@@ -59,24 +65,47 @@ public class MyDeliveriesAdapter extends ArrayAdapter<LookForUser> {
 
         LookForUser current = deliveries.get(position);
 
+        holder.what.setText(current.getDelivery().getDesc());
+        holder.path.setText("From "+current.getDelivery().getCityDepart()+
+                " to "+current.getDelivery().getCityArrive());
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-        //System.out.println("1");
-        // getUserName(deliverUser);
-        //System.out.println(deliverUser.getFullName());
-        holder.what.setText( deliveries.get(position).getDelivery().getDesc()+" from "+
-                deliveries.get(position).getDelivery().getCityDepart()+" to "+
-                deliveries.get(position).getDelivery().getCityArrive());
-//                +current.getDelivery().getCityDepart()+" to "+
-//                current.getDelivery().getCityArrive());
-        //holder.from.setText(" from "+del.getCityDepart()+" to "+del.getCityArrive());
-       // holder.acceptButton.setText("Ask");
-
-        //holder.path.setText("Is going from "+deliverUser.getCityDepart()+" to "+deliverUser.getCityArrive());
+                builder.setMessage("Do you want to cancel the delivery?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                DatabaseReference newPostRef1 = mDatabase.child("Delivery").
+                                        child(deliveries.get(position).getDelivery().getKey()).child("status");
+                                newPostRef1.setValue("CANCEL");
+                                DatabaseReference newPostRef2 = mDatabase.child("LookForUser").
+                                        child(deliveries.get(position).getKey()).child("status");
+                                newPostRef2.setValue("CANCEL");
 
 
+                                deliveries.remove(position);
+                                notifyDataSetChanged();
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //  Action for 'NO' Button
+                               dialog.cancel();
+                            }
+                        });
 
-        //holder.imgIcon.setImageResource(weather.icon);
-        //System.out.println("3");
+                //Creating dialog box
+                AlertDialog alert = builder.create();
+
+                alert.show();
+
+            }
+        });
+
+
 
 
         return row;
@@ -90,6 +119,8 @@ public class MyDeliveriesAdapter extends ArrayAdapter<LookForUser> {
 
         //ImageView imgIcon;
         TextView what;
+        TextView path;
+        Button deleteButton;
        // TextView from;
         //Button acceptButton;
     }

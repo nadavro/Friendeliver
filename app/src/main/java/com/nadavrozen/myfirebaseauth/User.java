@@ -1,5 +1,6 @@
 package com.nadavrozen.myfirebaseauth;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -8,31 +9,39 @@ import android.os.Parcelable;
  */
 public class User implements Parcelable {
 
-        private String email;
-        private String birthday = "";
-         String fullName;
-        private String uri = "";
+    private  int isFacebook;
+    private String email;
+    private String birthday = "";
+    String fullName;
+    private String uriImage = "";
+    private String phone = "";
+    private String facebookLink="";
 
-        public User() {}
 
-        public User(String fullName, String birthday , String email, String uri) {
-            this.fullName = fullName;
-            this.birthday = birthday;
-            this.email = email;
-            this.uri = uri;
-        }
+    public User() {}
+
+    public User(String fullName, String birthday ,String email,int isFacebook) {
+        this.fullName = fullName;
+        this.birthday = birthday;
+        this.email = email;
+        this.isFacebook = isFacebook;
+    }
 
     public User(User me) {
         this.email = me.email;
         this.birthday = me.birthday;
         this.fullName = me.fullName;
+        this.isFacebook=  me.isFacebook;
     }
 
     protected User(Parcel in) {
         email = in.readString();
         birthday = in.readString();
         fullName = in.readString();
-        uri = in.readString();
+        phone = in.readString();
+        isFacebook = in.readInt();
+        facebookLink = in.readString();
+        uriImage = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -47,10 +56,7 @@ public class User implements Parcelable {
         }
     };
 
-    public String getBirthday() {
-        System.out.println(birthday);
-        return birthday;
-        }
+    public String getBirthday() {return birthday;}
 
         public String getFullName() {
             return fullName;
@@ -61,13 +67,7 @@ public class User implements Parcelable {
     }
 
 
-    public String getUri() {
-        return uri;
-    }
 
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
 
     @Override
     public int describeContents() {
@@ -79,6 +79,38 @@ public class User implements Parcelable {
         dest.writeString(email);
         dest.writeString(birthday);
         dest.writeString(fullName);
-        dest.writeString(uri);
+        dest.writeString(phone);
+        dest.writeString(uriImage);
+        dest.writeInt(isFacebook);
+        dest.writeString(facebookLink);
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+
+    public int getIsFacebook() {
+        return isFacebook;
+    }
+
+    public void setIsFacebook(int isFacebook) {
+        this.isFacebook = isFacebook;
+    }
+
+    public String getFacebookLink() {
+        return facebookLink;
+    }
+
+    public void setFacebookLink(String facebookLink) {
+        this.facebookLink = facebookLink;
+    }
+
+    public String getUriImage() {
+        return uriImage;
+    }
+
+    public void setUriImage(String uriImage) {
+        this.uriImage = uriImage;
     }
 }
