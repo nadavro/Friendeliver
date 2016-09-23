@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText day;
     private EditText month;
     private TextView textViewSignin;
-    private EditText birthday;
+    //private EditText birthday;
     private ProgressDialog progressDialog;
     private DatabaseReference db;
     FirebaseHelper firebaseHelper;
@@ -91,8 +91,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         firstName = (EditText)findViewById(R.id.firstName);
         lastName = (EditText)findViewById(R.id.lastName);
-        birthday = (EditText)findViewById(R.id.dobEditText);
-        MyEditTextDatePicker dp = new MyEditTextDatePicker(this,birthday.getId());
+       // birthday = (EditText)findViewById(R.id.dobEditText);
+        //MyEditTextDatePicker dp = new MyEditTextDatePicker(this,birthday.getId());
         buttonRegister = (Button) findViewById(R.id.buttonRegister);
         editTextEmail = (EditText)findViewById(R.id.editTextEmail);
         editTextPassword = (EditText)findViewById(R.id.editTextPassword);
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final String password = editTextPassword.getText().toString().trim();
         final String first = firstName.getText().toString().trim();
         final String last = lastName.getText().toString().trim();
-        final String dob = birthday.getText().toString();
+        //final String dob = birthday.getText().toString();
         if(TextUtils.isEmpty(first)){
             //first name is empty
             Toast.makeText(this,"Please enter First name",Toast.LENGTH_SHORT).show();
@@ -135,12 +135,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
 
         }
-        if(TextUtils.isEmpty(dob)){
-            //first name is empty
-            Toast.makeText(this,"Please enter birthday",Toast.LENGTH_SHORT).show();
-            return;
-
-        }
+//        if(TextUtils.isEmpty(dob)){
+//            //first name is empty
+//            Toast.makeText(this,"Please enter birthday",Toast.LENGTH_SHORT).show();
+//            return;
+//
+//        }
 
 
         if (TextUtils.isEmpty(email)){
@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onComplete(Task<AuthResult> task) {
                 progressDialog.hide();
                 if (task.isSuccessful()) {
-                    WriteNewUser(task.getResult().getUser(), first + " " + last, dob, email);
+                    WriteNewUser(task.getResult().getUser(), first + " " + last, "", email);
 //                    Firebase ref = new Firebase(FIREBASE_URL);
 //                    ref.authWithPassword(email, password, new Firebase.AuthResultHandler() {
 //                        @Override
