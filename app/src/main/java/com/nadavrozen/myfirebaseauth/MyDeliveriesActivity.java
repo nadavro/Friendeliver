@@ -81,7 +81,7 @@ public class MyDeliveriesActivity extends Fragment {
 
 
         this.myDeliveries = l;
-        MyDeliveriesAdapter adapter = new MyDeliveriesAdapter(getActivity().getApplicationContext()
+        MyDeliveriesAdapter adapter = new MyDeliveriesAdapter(this.getActivity().getWindow().getContext()
                 ,R.layout.listview_row_dels, myDeliveries);
         this.adapter = adapter;
         delsListView.setAdapter(adapter);
@@ -89,6 +89,7 @@ public class MyDeliveriesActivity extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapter, View arg1,
                                            int position, long id) {
+                System.out.println("UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View alertLayout = inflater.inflate(R.layout.my_deliveries_dialog, null);
                 LookForUser current = (LookForUser) adapter.getItemAtPosition(position);
@@ -189,6 +190,21 @@ public class MyDeliveriesActivity extends Fragment {
 
         deliveNameField.setText("By:");
         deliverName.setText(usi.getUser().getFullName());
+        deliverName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Fragment fragment = new UserProfile();
+                Fragment fragment = new UserProfile();
+                final Bundle bundle = new Bundle();
+                bundle.putParcelable("User",usi.getUser());
+                bundle.putString("userKey",usi.getUid());
+
+                fragment.setArguments(bundle);
+                getFragmentManager().beginTransaction().
+                        setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                        .replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+            }
+        });
         deliverDateField.setText("On");
         deliverDate.setText(usi.getDateStr() +" at "+usi.getArriveAtStr());
         finishButton.setOnClickListener(new View.OnClickListener() {

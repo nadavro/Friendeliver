@@ -1,6 +1,8 @@
 package com.nadavrozen.myfirebaseauth;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -93,7 +96,7 @@ public class ProfileActivity extends Fragment implements View.OnClickListener {
         mDatabase.child("User").child(user.getUid()).addValueEventListener(new com.google.firebase.database.ValueEventListener() {
             @Override
             public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
-
+                System.out.println("innnnn profileeeeeeeeee");
                 me = dataSnapshot.getValue(User.class);
 
                 userName = me.getFullName();

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
+
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +66,8 @@ public class MyDeliveriesAdapter extends ArrayAdapter<LookForUser> {
 
 
         LookForUser current = deliveries.get(position);
-
+        String t = current.getDelivery().getKey();
+        String q = current.getKey();
         holder.what.setText(current.getDelivery().getDesc());
         holder.path.setText("From "+current.getDelivery().getCityDepart()+
                 " to "+current.getDelivery().getCityArrive());
@@ -77,17 +80,30 @@ public class MyDeliveriesAdapter extends ArrayAdapter<LookForUser> {
                         .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                DatabaseReference newPostRef1 = mDatabase.child("Delivery").
-                                        child(deliveries.get(position).getDelivery().getKey()).child("status");
-                                newPostRef1.setValue("CANCEL");
+//                                LookForUser current = deliveries.get(position);
+                                String t = deliveries.get(position).getDelivery().getKey();
+                                String q = deliveries.get(position).getKey();
+                                String k = deliveries.get(position).getDelivery().getDeliverUserUid();
+                                String m = deliveries.get(position).getDutyId();
+                                System.out.println(q);
+//                                DatabaseReference newPostRef1 = mDatabase.child("Delivery").
+//                                        child(t).child("status");
+//                                newPostRef1.setValue("CANCEL");
+
                                 DatabaseReference newPostRef2 = mDatabase.child("LookForUser").
-                                        child(deliveries.get(position).getKey()).child("status");
-                                newPostRef2.setValue("CANCEL");
+                                        child(q);
+                                newPostRef2.removeValue();
+
+                                DatabaseReference newPostRef3 = mDatabase.child("Duty").
+                                        child(m);
+                                newPostRef3.removeValue();
+//                                        child("status");
+//                                newPostRef2.setValue("CANCEL");
 
 
                                 deliveries.remove(position);
                                 notifyDataSetChanged();
-                                dialog.dismiss();
+                                //dialog.dismiss();
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {

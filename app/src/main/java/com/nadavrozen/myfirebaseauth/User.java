@@ -89,6 +89,9 @@ public class User implements Parcelable {
         return phone;
     }
 
+    public void setPhone(String phone){
+        this.phone = phone;
+    }
 
     public int getIsFacebook() {
         return isFacebook;
