@@ -2,12 +2,9 @@ package com.nadavrozen.myfirebaseauth;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +14,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.firebase.client.FirebaseError;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,8 +35,11 @@ public class MyDeliveriesActivity extends Fragment {
     private ArrayList<LookForUser> myDeliveries;
     private ListView delsListView;
     private DeliverUser currDeliverUser;
+    private MyDeliveriesAdapter adapter;
+    private String lookForUserKey;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_my_deliveries, container, false);
+        final View view = inflater.inflate(R.layout.activity_my_deliveries, container, false);
 
         delsListView = (ListView)view.findViewById(R.id.delsListView);
         myDeliveries = new ArrayList<LookForUser>();
@@ -56,9 +54,11 @@ public class MyDeliveriesActivity extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 final ArrayList<LookForUser> l = new ArrayList<LookForUser>();
-                for (DataSnapshot usi : dataSnapshot.getChildren()){
+                for (DataSnapshot usi : dataSnapshot.getChildren()) {
                     LookForUser lookForUser = usi.getValue(LookForUser.class);
-                    if (lookForUser.getDelivery().getStatus() != "CANCEL"){
+                    lookForUser.setKey(usi.getKey());
+
+                    if (lookForUser.getDelivery().getStatus() != "CANCEL") {
                         l.add(lookForUser);
                     }
 
@@ -83,6 +83,7 @@ public class MyDeliveriesActivity extends Fragment {
         this.myDeliveries = l;
         MyDeliveriesAdapter adapter = new MyDeliveriesAdapter(getActivity().getApplicationContext()
                 ,R.layout.listview_row_dels, myDeliveries);
+        this.adapter = adapter;
         delsListView.setAdapter(adapter);
         delsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -92,6 +93,7 @@ public class MyDeliveriesActivity extends Fragment {
                 View alertLayout = inflater.inflate(R.layout.my_deliveries_dialog, null);
                 LookForUser current = (LookForUser) adapter.getItemAtPosition(position);
                 String deluid = current.getDelivery().getDeliverUserUid();
+
 
 
 
@@ -111,10 +113,14 @@ public class MyDeliveriesActivity extends Fragment {
                 if (current.getDelivery().getStatus().equals("PENDING")){
                     status.setTextColor(Color.parseColor("red"));
                 }
-                else{
 
+                else
+                {
+
+                    System.out.println("GREEN " + current.getUid());
                     status.setTextColor(Color.parseColor("green"));
-                    cont(deluid, alertLayout);
+
+                    cont(deluid, alertLayout, position, current); // accepted deliveries
 //
 
                 }
@@ -146,12 +152,11 @@ public class MyDeliveriesActivity extends Fragment {
 
     }
 
-    private void dosomething() {
-    }
 
 
-    private void cont(String current, final View alertLayout) {
 
+    private void cont(String current, final View alertLayout, final int position, final LookForUser lookForUser) {
+        System.out.println("IN CONT+" + lookForUser.getUid());
         DatabaseReference refi = mDatabase.child("DeliverUser").
                 child(current);
         refi.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -159,7 +164,7 @@ public class MyDeliveriesActivity extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 DeliverUser usi = dataSnapshot.getValue(DeliverUser.class);
-                setCurrentDeliverUser(usi,alertLayout);
+                setCurrentDeliverUser(usi,alertLayout,position,lookForUser);
 
 
             }
@@ -171,7 +176,7 @@ public class MyDeliveriesActivity extends Fragment {
         });
     }
 
-    private void setCurrentDeliverUser(final DeliverUser usi, View alertLayout) {
+    private void setCurrentDeliverUser(final DeliverUser usi, View alertLayout, final int position, final LookForUser lookForUser) {
         this.currDeliverUser = usi;
         Button finishButton = (Button)alertLayout.findViewById(R.id.finishBtn);
         TextView deliverName = (TextView)alertLayout.findViewById(R.id.delNameTxtView);
@@ -189,7 +194,8 @@ public class MyDeliveriesActivity extends Fragment {
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+                final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 final View dialogView = inflater.inflate(R.layout.review_dialog_custom, null);
                 dialogBuilder.setView(dialogView);
@@ -204,6 +210,17 @@ public class MyDeliveriesActivity extends Fragment {
                         Review review = new Review(myDeliveries.get(0).getUser().getFullName()
                                 , edt.getText().toString(), usi.getUid());
                         mDatabase.child("Review").push().setValue(review);
+                        //remove from delivery
+                        //DatabaseReference s = mDatabase.child("Delivery").child(lookForUser.getDelivery().getKey());
+                        //s.removeValue();
+                        System.out.println(lookForUser.getKey());
+                        DatabaseReference q = mDatabase.child("LookForUser").child(lookForUser.getKey());
+                        q.removeValue();
+                        DatabaseReference t = mDatabase.child("Duty").child(lookForUser.getDutyId());
+                        t.removeValue();
+                        adapter.remove(adapter.getItem(position));
+
+
                     }
                 });
                 dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

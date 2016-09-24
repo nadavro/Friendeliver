@@ -22,6 +22,7 @@ public class LookForUser {
     private Delivery delivery;
     private String uid;
     private String key;
+    private String dutyId = "";
 
 
     public LookForUser(){
@@ -62,5 +63,13 @@ public class LookForUser {
     }
     public void setKey(String key){
         this.key = key;
+    }
+
+    public String getDutyId() {
+        return dutyId;
+    }
+
+    public void setDutyId(String dutyId) {
+        this.dutyId = dutyId;
     }
 }

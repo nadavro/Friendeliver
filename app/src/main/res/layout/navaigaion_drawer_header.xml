@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/gradient"
+    android:id="@+id/header"
+    android:layout_gravity="left|start"
+    android:layout_centerHorizontal="true"
+
+
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nadav Rozen"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:layout_marginTop="15dp"
+        android:id="@+id/name_header"
+        android:layout_centerHorizontal="true"
+        />
+
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/img_header"
+        android:src="@drawable/person"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        />
+
+
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Personal Area"-->
+        <!--android:layout_toRightOf="@+id/img_header"-->
+        <!--android:textSize="15dp"-->
+        <!--android:textStyle="bold"-->
+        <!--android:layout_marginTop="15dp"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:id="@+id/text_header"-->
+        <!--android:layout_below="@+id/name_header"-->
+        <!--/>-->
+
+</RelativeLayout>

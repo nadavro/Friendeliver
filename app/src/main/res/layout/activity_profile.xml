@@ -21,17 +21,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="30dp"
-            android:text="Welcome"
+            android:textSize="40dp"
+            android:text="FrienDeliver"
             android:id="@+id/textView2"
             android:layout_gravity="center_horizontal"
-            android:textColor="#878787"
+            android:textColor="@color/yellow_header"
             android:fontFamily="sans-serif-light"
             android:textStyle="bold"
+            android:textColorHighlight="@color/gray"
             />
 
         <Button
-            android:stateListAnimator="@null"
             android:layout_marginTop="100dp"
             android:text="Looking for delivery"
             android:textSize="18dp"
@@ -66,7 +66,7 @@
             />
 
         <Button
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="50dp"
             android:text="Logout"
             android:id="@+id/buttonLogOut"
             android:layout_gravity="center_horizontal"

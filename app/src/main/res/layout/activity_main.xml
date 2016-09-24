@@ -61,10 +61,16 @@
             android:layout_margin="15dp"
             android:id="@+id/buttonRegister"
             android:text="Register User"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:textColor="#FFFFFF"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:background="@drawable/buttonshape"
+            android:textSize="16dp"
+            android:layout_gravity="center_horizontal"
+            />
 
         <TextView
+            android:layout_marginTop="40dp"
             android:textAlignment="center"
             android:text="Already registered? Login here!"
             android:id="@+id/textViewSignin"

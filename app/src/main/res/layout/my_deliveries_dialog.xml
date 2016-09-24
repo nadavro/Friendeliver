@@ -164,6 +164,7 @@
             />
     </LinearLayout>
     <Button
+        android:text="FINISH DELIVERY"
         android:id="@+id/finishBtn"
         android:visibility="gone"
         android:layout_gravity="center"

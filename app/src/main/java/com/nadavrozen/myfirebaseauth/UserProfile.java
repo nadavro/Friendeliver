@@ -28,7 +28,8 @@ import java.util.ArrayList;
  * The profile of the user including image,reviews and other personal detail
  */
 public class UserProfile extends Fragment {
-    private DeliverUser currentUser;
+    private User currentUser;
+    private String userKey;
     private DatabaseReference mDatabase;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
@@ -55,6 +56,7 @@ public class UserProfile extends Fragment {
         Bundle extras = this.getArguments();
         if (extras != null) {
             currentUser = extras.getParcelable("User");
+            userKey = extras.getString("userKey");
 
         }
 
@@ -62,21 +64,22 @@ public class UserProfile extends Fragment {
         ImageView imgView = (ImageView)view.findViewById(R.id.img);
         TextView nameView = (TextView)view.findViewById(R.id.name);
         TextView emailView = (TextView)view.findViewById(R.id.email);
-        TextView linkView = (TextView)view.findViewById(R.id.facebook);
+        ImageView linkView = (ImageView)view.findViewById(R.id.facebook);
         TextView phoneView = (TextView)view.findViewById(R.id.phonenum);
 
-        String name = currentUser.getUser().getFullName();
-        String email = currentUser.getUser().getEmail();
-        if(currentUser.getUser().getIsFacebook()==1){
-            System.out.println("is facecbook");
-            String photoUrl = currentUser.getUser().getUriImage();
+        String name = currentUser.getFullName();
+        String email = currentUser.getEmail();
+        if(currentUser.getIsFacebook()==1){
+            //System.out.println("is facecbook");
+            String photoUrl = currentUser.getUriImage();
+            linkView.setVisibility(View.VISIBLE);
 //            Uri uri = Uri.parse(photoUrl);
 //            imgView.setImageURI(null);
 //            imgView.setImageURI(uri);
             new AsyncUploadImage(imgView).execute(photoUrl);
-            final String facebookLink = currentUser.getUser().getFacebookLink();
+            final String facebookLink = currentUser.getFacebookLink();
 
-            linkView.setText("Facebook link");
+            //linkView.setText("Facebook link");
             linkView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -88,7 +91,7 @@ public class UserProfile extends Fragment {
         }
 
 
-        String phone = currentUser.getUser().getPhone();
+        String phone = currentUser.getPhone();
 
 
         nameView.setText(name);
@@ -97,7 +100,7 @@ public class UserProfile extends Fragment {
         userReviews = new ArrayList<Review>();
 
         //retrieve reviews about the current user
-        Query query = mDatabase.child("Review").orderByChild("uid").equalTo(currentUser.getUid());
+        Query query = mDatabase.child("Review").orderByChild("uid").equalTo(userKey);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

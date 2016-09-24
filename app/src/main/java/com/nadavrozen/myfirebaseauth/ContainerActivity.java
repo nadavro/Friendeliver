@@ -13,8 +13,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class ContainerActivity extends ActionBarActivity {
     private ListView mDrawerList;
@@ -23,15 +33,55 @@ public class ContainerActivity extends ActionBarActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
     private static final int CONTENT_VIEW_ID = 10101010;
+    private View header;
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference mDatabase;
+    private User me;
+    private String key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_container);
+        firebaseAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+//        if (firebaseAuth.getCurrentUser() == null){
+//            finish();
+//            startActivity(new Intent(this,ProfileActivity.class));
+//        }
+        key = firebaseAuth.getCurrentUser().getUid();
+        DatabaseReference q = mDatabase.child("User").child(key);
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                ImageView img = (ImageView)header.findViewById(R.id.img_header);
+                TextView name = (TextView)header.findViewById(R.id.name_header);
+                name.setText(user.getFullName());
+                if (user.getIsFacebook()==1){
+                    String photoUrl = user.getUriImage();
+                    new AsyncUploadImage(img).execute(photoUrl);
+                }
+                me = user;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
 
         mDrawerList = (ListView)findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
+        header = getLayoutInflater().inflate(R.layout.navaigaion_drawer_header, null);
+
+
+
+        mDrawerList.addHeaderView(header);
+
 
         addDrawerItems();
         setupDrawer();
@@ -53,16 +103,20 @@ public class ContainerActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 Fragment fragment;
                 switch (position){
-                    case 0: //edit profile
-                        fragment = new ProfileActivity();
+                    case 1: //edit profile
+                        fragment = new UserProfile();
+                        final Bundle bundle = new Bundle();
+                        bundle.putParcelable("User",me);
+                        bundle.putString("userKey",key);
+                        fragment.setArguments(bundle);
                         break;
-                    case 1: // my deliveries
+                    case 2: // my deliveries
                         fragment = new MyDeliveriesActivity();
                         break;
-                    case 2: //my duties
+                    case 3: //my duties
                         fragment = new MyDutiesActivity();
                         break;
-                    case 3://my requests
+                    case 4://my requests
                         fragment = new MyRequestsActivity();
                         break;
                     default:

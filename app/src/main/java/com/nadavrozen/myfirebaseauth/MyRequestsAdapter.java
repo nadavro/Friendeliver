@@ -97,6 +97,11 @@ public class MyRequestsAdapter extends ArrayAdapter<Request> {
             @Override
             public void onClick(View v) {
 
+                Duty duty = new Duty(reqList.get(position).getLookForUser(),delUser);
+                DatabaseReference newPostRef6 = mDataBase.child("Duty").push();
+                String dutyKey = newPostRef6.getKey();
+                newPostRef6.setValue(duty);
+
                 DatabaseReference newPostRef1 = mDataBase.child("Delivery").
                         child(reqList.get(position).getDeliveryID()).child("status");
                 newPostRef1.setValue("ACCEPTED");
@@ -110,6 +115,12 @@ public class MyRequestsAdapter extends ArrayAdapter<Request> {
                         child("status");
                 newPostRef3.setValue("ACCEPTED");
 
+                DatabaseReference newPostRef8 = mDataBase.child("LookForUser").
+                        child(reqList.get(position).getLookUserID()).
+                        child("dutyId");
+                newPostRef8.setValue(dutyKey);
+
+
 
                 DatabaseReference newPostRef4 = mDataBase.child("LookForUser").
                         child(reqList.get(position).getLookUserID()).child("delivery").
@@ -120,10 +131,10 @@ public class MyRequestsAdapter extends ArrayAdapter<Request> {
                         child(reqList.get(position).getDeliveryID()).child("deliverUserUid");
                 newPostRef5.setValue(reqList.get(position).getDelUserID());
 
-                Duty duty = new Duty(reqList.get(position).getLookForUser(),delUser);
-                DatabaseReference newPostRef6 = mDataBase.child("Duty").push();
-
-                newPostRef6.setValue(duty);
+//                Duty duty = new Duty(reqList.get(position).getLookForUser(),delUser);
+//                DatabaseReference newPostRef6 = mDataBase.child("Duty").push();
+//
+//                newPostRef6.setValue(duty);
 
                 reqList.remove(position);
                 notifyDataSetChanged();

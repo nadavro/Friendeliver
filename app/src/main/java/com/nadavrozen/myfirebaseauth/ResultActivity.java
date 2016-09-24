@@ -144,7 +144,8 @@ public class ResultActivity extends Fragment {
                         //Showing the user profile screen
                         Fragment fragment = new UserProfile();
                         final Bundle bundle = new Bundle();
-                        bundle.putParcelable("User",currentDeliver);
+                        bundle.putParcelable("User",currentDeliver.getUser());
+                        bundle.putString("userKey",currentDeliver.getUid());
 
                         fragment.setArguments(bundle);
                         getFragmentManager().beginTransaction().

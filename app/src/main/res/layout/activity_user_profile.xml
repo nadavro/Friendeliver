@@ -52,12 +52,12 @@
             android:textSize="18dp"
             />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:id="@+id/facebook"
-            android:text="adietsion@facebook"
-            android:textSize="18dp"
+            android:src="@drawable/facebooklogo"
+
             />
 
         <TextView

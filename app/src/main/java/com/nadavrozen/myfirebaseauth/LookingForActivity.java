@@ -337,6 +337,7 @@ public class LookingForActivity extends Fragment implements View.OnClickListener
         String lookKey = ref.getKey();
         delivery.setKey(delKey);
         //System.out.println(delKey);
+        lookForUser.setKey(lookKey);
 
         ref.setValue(lookForUser);
         //ans = LookForUser.FindMatches(delivery,mDatabase);
