@@ -1,8 +1,10 @@
 package com.nadavrozen.myfirebaseauth;
 
 import android.app.ActionBar;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,6 +37,8 @@ public class ResultActivity extends Fragment {
     private LookForUser lookForUser;
     private String lookForUserID;
     private LookForUser lookUser;
+    private FragmentManager fragmentManager;
+    private ProgressDialog progressDialog;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_result, container, false);
@@ -60,6 +64,10 @@ public class ResultActivity extends Fragment {
             //Toast.makeText(ResultActivity.this,delivery.getCityArrive(),Toast.LENGTH_SHORT).show();
 
         }
+
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Searching");
+        progressDialog.show();
         //System.out.println("hahahahahah "+delivery.getKey());
         DatabaseReference q = mDatabase.child("LookForUser").child(lookForUserID);
         q.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -105,6 +113,26 @@ public class ResultActivity extends Fragment {
 
     public void setDeliverList(ArrayList<DeliverUser> deliverList) {
         this.deliverList = deliverList;
+        progressDialog.dismiss();
+        if (deliverList.size()==0){
+            DatabaseReference yt = mDatabase.child("LookForUser").child(lookForUserID);
+            yt.removeValue();
+            new AlertDialog.Builder(getActivity(),R.style.MyAlertDialogStyle)
+                    .setTitle("NO MATCHES FOUND")
+                    .setMessage("Unfortunately, there is currently no one who can pick up your things. Try again later!")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Fragment fragment =new  ProfileActivity();
+                            getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment)
+                                    .setCustomAnimations(android.R.anim.slide_in_left,
+                                            android.R.anim.slide_out_right).addToBackStack(null).commit();
+
+                            // continue with delete
+                        }
+                    })
+
+                    .show();
+        }
         //System.out.println(deliverList.size());
         cont();
 
@@ -125,7 +153,7 @@ public class ResultActivity extends Fragment {
                                     long arg3) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View alertLayout = inflater.inflate(R.layout.result_dialog, null);
-                final android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(getActivity());
+                final android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(getActivity(),R.style.MyAlertDialogStyle);
                 final DeliverUser currentDeliver = (DeliverUser) adapter.getItemAtPosition(position);
                 TextView date = (TextView) alertLayout.findViewById(R.id.dateDeliver);
                 TextView specAddressDepart =

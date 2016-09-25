@@ -16,6 +16,7 @@ public class User implements Parcelable {
     private String uriImage = "";
     private String phone = "";
     private String facebookLink="";
+    private String fcmToken = "";
 
 
     public User() {}
@@ -42,6 +43,7 @@ public class User implements Parcelable {
         isFacebook = in.readInt();
         facebookLink = in.readString();
         uriImage = in.readString();
+        fcmToken = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -83,6 +85,7 @@ public class User implements Parcelable {
         dest.writeString(uriImage);
         dest.writeInt(isFacebook);
         dest.writeString(facebookLink);
+        dest.writeString(fcmToken);
     }
 
     public String getPhone() {
@@ -115,5 +118,13 @@ public class User implements Parcelable {
 
     public void setUriImage(String uriImage) {
         this.uriImage = uriImage;
+    }
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 }

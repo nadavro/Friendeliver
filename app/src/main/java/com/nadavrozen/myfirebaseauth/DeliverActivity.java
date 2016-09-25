@@ -351,7 +351,7 @@ public class DeliverActivity extends Fragment implements View.OnClickListener {
         System.out.println("tititititittititi" + deliverUser.getKey());
         d.setValue(deliverUser);
 
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(getActivity(),R.style.MyAlertDialogStyle)
                 .setTitle("Thank you!").setMessage("Now, Other people can ask you for picking-up their" +
                 " things. Have a safe drive!").setNeutralButton("OK", new DialogInterface.OnClickListener() {
             @Override

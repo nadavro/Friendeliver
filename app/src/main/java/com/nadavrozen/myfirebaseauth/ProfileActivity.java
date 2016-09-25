@@ -32,6 +32,7 @@ import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class ProfileActivity extends Fragment implements View.OnClickListener {
     private static final String TAG = "myApp";
@@ -62,9 +63,12 @@ public class ProfileActivity extends Fragment implements View.OnClickListener {
 //        }
 
         final FirebaseUser user = firebaseAuth.getCurrentUser();
-
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        final String key = user.getUid();
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        DatabaseReference ry = mDatabase.child("User").child(key).child("fcmToken");
+        ry.setValue(refreshedToken);
+
         //final Firebase ref = usersRef.child("User").child(user.getUid());
 
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
@@ -100,8 +104,43 @@ public class ProfileActivity extends Fragment implements View.OnClickListener {
                 me = dataSnapshot.getValue(User.class);
 
                 userName = me.getFullName();
-               String s = userName.substring(0, userName.lastIndexOf(" "));
 
+
+                if (me.getPhone().equals("")){
+                    final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity(),R.style.MyAlertDialogStyle);
+                    dialogBuilder.setTitle("ENTER PHONE").setMessage("Please enter your phone number");
+// ...Irrelevant code for customizing the buttons and title
+                    LayoutInflater inflater = getActivity().getLayoutInflater();
+
+                    View dialogView = inflater.inflate(R.layout.phone_dialog, null);
+                    dialogBuilder.setView(dialogView);
+                    final EditText editText = (EditText) dialogView.findViewById(R.id.phone);
+
+                    //System.out.println(f);
+//                    DatabaseReference r = mDatabase.child("User").child(key).child("phone");
+//                    r.setValue("93939393");
+                    dialogBuilder.setPositiveButton("DONE", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String f = String.valueOf(editText.getText());
+                            DatabaseReference r = mDatabase.child("User").child(key).child("phone");
+                            r.setValue(f);
+
+                        }
+                    });
+
+                   // dialogBuilder.setView(dialogView);
+                    //dialogBuilder.setPositiveButton("DONE",ne)
+
+
+
+
+//                    editText.setText("Please enter phone number");
+                    AlertDialog alertDialog = dialogBuilder.create();
+                    alertDialog.show();
+
+
+                }
 
                 //uri.setText(me.getFullName());
 

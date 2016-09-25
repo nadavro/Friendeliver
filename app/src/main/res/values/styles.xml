@@ -5,6 +5,21 @@
                 <!-- Customize your theme here. -->
               <item name="colorPrimary">@color/yellow_header</item>
                <item name="colorPrimaryDark">@color/yellow_header</item>
-               <item name="colorAccent">@color/colorAccent</item>
+               <item name="colorAccent">@color/yellow_header</item>
+    </style>
+
+    <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowTitleStyle">@style/titleDialogStyle</item>
+
+        <!-- Used for the buttons -->
+        <item name="colorAccent">#FFC107</item>
+        <!-- Used for the title and text -->
+        <item name="android:textColorPrimary">#0B0A09</item>
+        <!-- Used for the background -->
+        <item name="android:background">#FFFFFF</item>
+    </style>
+
+    <style name="titleDialogStyle" parent="@android:style/TextAppearance.DialogWindowTitle">
+        <item name="android:gravity">center_vertical</item>
     </style>
 </resources>

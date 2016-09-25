@@ -88,7 +88,7 @@ public class DeliverAdapter extends ArrayAdapter<DeliverUser> {
         holder.acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(context)
+                new AlertDialog.Builder(context,R.style.MyAlertDialogStyle)
                         .setMessage("Ask " + objects[position].getUser().fullName + " to pickup your things?")
                         .setPositiveButton("YES",
                                 new DialogInterface.OnClickListener() {
@@ -107,6 +107,12 @@ public class DeliverAdapter extends ArrayAdapter<DeliverUser> {
 //                                        ref1.setValue(current.getKey());
 
                                         //Noitify the deliverUser about the request
+
+                                        System.out.println("kakakamamamakakakakakakaka");
+                                        SendNotification sendNotification = new SendNotification();
+                                        sendNotification.sendMessage(objects[position].getUser().getFcmToken(),
+                                                "FrienDeliver","New request from "+lookForUser.getUser().getFullName(),"FrienDeliver","message");
+
                                         Request request = new Request(lookForUser, objects[position],delivery.getKey());
                                         DatabaseReference ref2 = mDataBase.child("Request").push();
                                         ref2.setValue(request);
@@ -124,7 +130,7 @@ public class DeliverAdapter extends ArrayAdapter<DeliverUser> {
 //                                        ref2.updateChildren(m);
 
                                         //show alert to the user who was looking for delivery
-                                        new AlertDialog.Builder(context)
+                                        new AlertDialog.Builder(context,R.style.MyAlertDialogStyle)
                                                 .setMessage("A request was send to "+
                                                         objects[position].getUser().getFullName()).
                                                 setPositiveButton("OK",
