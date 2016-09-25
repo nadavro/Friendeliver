@@ -45,6 +45,7 @@
             />
 
         <TextView
+            android:layout_marginTop="2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/phonenum"
@@ -53,6 +54,7 @@
             />
 
         <ImageView
+            android:layout_marginTop="5dp"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:id="@+id/facebook"
@@ -61,11 +63,12 @@
             />
 
         <TextView
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/reviewsHeader"
             android:text="REVIEWS:"
+            android:textStyle="bold"
             android:textSize="18dp"
             />
 

@@ -153,7 +153,7 @@ public class ProfileActivity extends Fragment implements View.OnClickListener {
             }
         });
 
-        uri = (TextView)view.findViewById(R.id.uri);
+
         logbutton = (Button) view.findViewById(R.id.buttonLogOut);
         wantToDeliverButton = (Button) view.findViewById(R.id.deliverButton);
         lookForButton = (Button) view.findViewById(R.id.lookForButton);
@@ -165,7 +165,7 @@ public class ProfileActivity extends Fragment implements View.OnClickListener {
         logbutton.setOnClickListener(this);
         wantToDeliverButton.setOnClickListener(this);
         lookForButton.setOnClickListener(this);
-        uri.setOnClickListener(this);
+
 //        myDeliveries.setOnClickListener(this);
 //        myRequests.setOnClickListener(this);
 
@@ -202,11 +202,7 @@ public class ProfileActivity extends Fragment implements View.OnClickListener {
             //startActivity(new Intent(this,LookingForActivity.class));
         }
 
-        if (v == uri){
-//            Uri uri = Uri.parse(me.getUri()); // missing 'http://' will cause crashed
-//            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-//            startActivity(intent);
-        }
+
     }
 
 }

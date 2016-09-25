@@ -4,13 +4,15 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    >
 
     <TextView
         android:id="@+id/tit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Your Duties"
+        android:text="My Duties"
         android:gravity="center_horizontal"
         android:textSize="22dp"/>
     <ListView

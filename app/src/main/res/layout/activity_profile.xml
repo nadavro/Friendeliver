@@ -15,7 +15,13 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/linearLayout">
+        android:id="@+id/linearLayout"
+        android:weightSum="1">
+        <!--<ImageView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="200dp"-->
+          <!--android:src="@drawable/logo"-->
+            <!--android:layout_weight="0.61" />-->
         <TextView
             android:layout_marginTop="50dp"
             android:layout_width="wrap_content"
@@ -32,7 +38,7 @@
             />
 
         <Button
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="30dp"
             android:text="Looking for delivery"
             android:textSize="18dp"
             android:id="@+id/lookForButton"
@@ -53,16 +59,6 @@
             android:layout_width="270dp"
             android:layout_height="50dp"
             android:background="@drawable/buttonshape"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:textSize="18dp"
-            android:id="@+id/uri"
-            android:layout_gravity="center_horizontal"
-
             />
 
         <Button

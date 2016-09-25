@@ -153,7 +153,7 @@ public class ResultActivity extends Fragment {
                                     long arg3) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View alertLayout = inflater.inflate(R.layout.result_dialog, null);
-                final android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(getActivity(),R.style.MyAlertDialogStyle);
+                final android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(getActivity());
                 final DeliverUser currentDeliver = (DeliverUser) adapter.getItemAtPosition(position);
                 TextView date = (TextView) alertLayout.findViewById(R.id.dateDeliver);
                 TextView specAddressDepart =
