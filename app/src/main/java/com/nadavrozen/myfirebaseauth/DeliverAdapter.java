@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,6 +89,8 @@ public class DeliverAdapter extends ArrayAdapter<DeliverUser> {
         holder.acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.buttonclick));
+
                 new AlertDialog.Builder(context,R.style.MyAlertDialogStyle)
                         .setMessage("Ask " + objects[position].getUser().fullName + " to pickup your things?")
                         .setPositiveButton("YES",
@@ -139,6 +142,7 @@ public class DeliverAdapter extends ArrayAdapter<DeliverUser> {
                                                             @Override
                                                             public void onClick(DialogInterface dialog,
                                                                     int which) {
+                                                                context.startActivity(new Intent(context, ContainerActivity.class));
 
                                                                 dialog.cancel();
 

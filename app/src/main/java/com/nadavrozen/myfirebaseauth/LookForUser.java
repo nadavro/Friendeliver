@@ -23,6 +23,7 @@ public class LookForUser {
     private String uid;
     private String key;
     private String dutyId = "";
+    private String delToken = "";
 
 
     public LookForUser(){
@@ -71,5 +72,13 @@ public class LookForUser {
 
     public void setDutyId(String dutyId) {
         this.dutyId = dutyId;
+    }
+
+    public String getDelToken() {
+        return delToken;
+    }
+
+    public void setDelToken(String delToken) {
+        this.delToken = delToken;
     }
 }

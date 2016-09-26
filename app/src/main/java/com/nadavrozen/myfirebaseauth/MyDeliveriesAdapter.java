@@ -81,6 +81,7 @@ public class MyDeliveriesAdapter extends ArrayAdapter<LookForUser> {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 //                                LookForUser current = deliveries.get(position);
+
                                 String t = deliveries.get(position).getDelivery().getKey();
                                 String q = deliveries.get(position).getKey();
                                 String k = deliveries.get(position).getDelivery().getDeliverUserUid();
@@ -99,7 +100,11 @@ public class MyDeliveriesAdapter extends ArrayAdapter<LookForUser> {
                                 newPostRef3.removeValue();
 //                                        child("status");
 //                                newPostRef2.setValue("CANCEL");
-
+                                SendNotification sendNotification  = new SendNotification();
+                                sendNotification.sendMessage(deliveries.get(position).getDelToken(),
+                                        "FrienDeliver",
+                                        deliveries.get(position).getUser().getFullName()+" canceled the delivery",
+                                        "FrienDeliver","FrienDeliver");
 
                                 deliveries.remove(position);
                                 notifyDataSetChanged();

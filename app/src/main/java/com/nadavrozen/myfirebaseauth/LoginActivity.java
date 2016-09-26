@@ -66,6 +66,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
 
+                    startActivity(new Intent(getApplicationContext(), ContainerActivity.class));
+
                 }
                 else {
 
@@ -145,7 +147,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         String name = user.getDisplayName();
                         String email = user.getEmail();
                         Uri imageUri = user.getPhotoUrl();
-                        // TODO: get facebook photo
+
 
                         //Profile.getCurrentProfile().getLinkUri().toString()
                         // 1 -> is from facebook login
@@ -180,6 +182,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (v == buttonSignin){
+            v.setBackgroundDrawable(getResources().getDrawable(R.drawable.buttonclick));
             userLogin();
         }
         

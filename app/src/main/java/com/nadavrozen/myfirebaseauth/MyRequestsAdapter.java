@@ -84,6 +84,11 @@ public class MyRequestsAdapter extends ArrayAdapter<Request> {
                         child(reqList.get(position).getKey()).child("status");
                 newPostRef2.setValue("DECLINED");
 
+                SendNotification sendNotification = new SendNotification();
+                sendNotification.sendMessage(reqList.get(position).getLookForUser().getUser().getFcmToken(),
+                        "FrienDeliver,",delUser.getUser().getFullName()+" rejected your request",
+                        "FrienDeliver","FrienDeliver");
+
                 reqList.remove(position);
                 notifyDataSetChanged();
 
@@ -120,6 +125,10 @@ public class MyRequestsAdapter extends ArrayAdapter<Request> {
                         child("dutyId");
                 newPostRef8.setValue(dutyKey);
 
+                DatabaseReference newPostRef9 = mDataBase.child("LookForUser").
+                        child(reqList.get(position).getLookUserID()).
+                        child("delToken");
+                newPostRef9.setValue(delUser.getUser().getFcmToken());
 
 
                 DatabaseReference newPostRef4 = mDataBase.child("LookForUser").
@@ -135,6 +144,11 @@ public class MyRequestsAdapter extends ArrayAdapter<Request> {
 //                DatabaseReference newPostRef6 = mDataBase.child("Duty").push();
 //
 //                newPostRef6.setValue(duty);
+                SendNotification sendNotification = new SendNotification();
+                sendNotification.sendMessage(
+                        reqList.get(position).getLookForUser().getUser().getFcmToken(),
+                        "FrienDeliver,",delUser.getUser().getFullName()+" accepted your request",
+                        "FrienDeliver","FrienDeliver");
 
                 reqList.remove(position);
                 notifyDataSetChanged();

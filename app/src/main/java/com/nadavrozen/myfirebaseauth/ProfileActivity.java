@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -55,6 +57,9 @@ public class ProfileActivity extends Fragment implements View.OnClickListener {
         //Firebase.setAndroidContext(this);
 
         textView = (TextView) view.findViewById(R.id.textView2);
+        Typeface custom_font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Aloha.ttf");
+
+        textView.setTypeface(custom_font);
         //Firebase usersRef = new Firebase("https://myfirstfirebaseauth.firebaseio.com");
         firebaseAuth = FirebaseAuth.getInstance();
 //        if (firebaseAuth.getCurrentUser() == null){
@@ -101,33 +106,38 @@ public class ProfileActivity extends Fragment implements View.OnClickListener {
             @Override
             public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
                 System.out.println("innnnn profileeeeeeeeee");
-                me = dataSnapshot.getValue(User.class);
+               User me = dataSnapshot.getValue(User.class);
 
                 userName = me.getFullName();
-
+                if(me.getBirthday()==""){
+                    System.out.println("birthday");
+//                    DatabaseReference r = mDatabase.child("User").child(key).child("birthday");
+//                    r.setValue("1987");
+                }
 
                 if (me.getPhone().equals("")){
-                    final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity(),R.style.MyAlertDialogStyle);
-                    dialogBuilder.setTitle("ENTER PHONE").setMessage("Please enter your phone number");
-// ...Irrelevant code for customizing the buttons and title
-                    LayoutInflater inflater = getActivity().getLayoutInflater();
-
-                    View dialogView = inflater.inflate(R.layout.phone_dialog, null);
-                    dialogBuilder.setView(dialogView);
-                    final EditText editText = (EditText) dialogView.findViewById(R.id.phone);
-
-                    //System.out.println(f);
-//                    DatabaseReference r = mDatabase.child("User").child(key).child("phone");
-//                    r.setValue("93939393");
-                    dialogBuilder.setPositiveButton("DONE", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            String f = String.valueOf(editText.getText());
-                            DatabaseReference r = mDatabase.child("User").child(key).child("phone");
-                            r.setValue(f);
-
-                        }
-                    });
+                    System.out.println("phone");
+//                    final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity(),R.style.MyAlertDialogStyle);
+//                    dialogBuilder.setTitle("ENTER PHONE").setMessage("Please enter your phone number");
+//
+//                    LayoutInflater inflater = getActivity().getLayoutInflater();
+//
+//                    View dialogView = inflater.inflate(R.layout.phone_dialog, null);
+//                    dialogBuilder.setView(dialogView);
+//                    final EditText editText = (EditText) dialogView.findViewById(R.id.phone);
+//
+//                    //System.out.println(f);
+////                    DatabaseReference r = mDatabase.child("User").child(key).child("phone");
+////                    r.setValue("93939393");
+//                    dialogBuilder.setPositiveButton("DONE", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            String f = String.valueOf(editText.getText());
+//                            DatabaseReference r = mDatabase.child("User").child(key).child("phone");
+//                            r.setValue(f);
+//
+//                        }
+//                    });
 
                    // dialogBuilder.setView(dialogView);
                     //dialogBuilder.setPositiveButton("DONE",ne)
@@ -136,8 +146,8 @@ public class ProfileActivity extends Fragment implements View.OnClickListener {
 
 
 //                    editText.setText("Please enter phone number");
-                    AlertDialog alertDialog = dialogBuilder.create();
-                    alertDialog.show();
+//                    AlertDialog alertDialog = dialogBuilder.create();
+//                    alertDialog.show();
 
 
                 }
@@ -175,6 +185,7 @@ public class ProfileActivity extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v == logbutton) {
+            v.setBackgroundDrawable(getResources().getDrawable(R.drawable.buttonclick));
             //logout
             firebaseAuth.signOut();
             getActivity().finish();
@@ -185,6 +196,7 @@ public class ProfileActivity extends Fragment implements View.OnClickListener {
 
         //want-to-be-a-deliver guy activity
         if (v == wantToDeliverButton) {
+            v.setBackgroundDrawable(getResources().getDrawable(R.drawable.buttonclick));
             Fragment fragment = new DeliverActivity();
             getFragmentManager().beginTransaction().
                     setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
@@ -194,6 +206,7 @@ public class ProfileActivity extends Fragment implements View.OnClickListener {
 //
         //looking-for-delivery activity
         if (v == lookForButton) {
+            v.setBackgroundDrawable(getResources().getDrawable(R.drawable.buttonclick));
             Fragment fragment = new LookingForActivity();
 
             getFragmentManager().beginTransaction()

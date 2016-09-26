@@ -36,6 +36,13 @@
 
         </EditText>
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/phoneNumber"
+            android:hint="Phone Number:"
+            android:layout_margin="15dp"
+            />
 
         <EditText
             android:layout_margin="15dp"

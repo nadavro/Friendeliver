@@ -17,17 +17,17 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/linearLayout"
         android:weightSum="1">
-        <!--<ImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="200dp"-->
-          <!--android:src="@drawable/logo"-->
-            <!--android:layout_weight="0.61" />-->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+          android:src="@drawable/logosecyellow"
+            android:layout_weight="0.61" />
         <TextView
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="40dp"
+            android:textSize="54dp"
             android:text="FrienDeliver"
             android:id="@+id/textView2"
             android:layout_gravity="center_horizontal"
@@ -38,7 +38,7 @@
             />
 
         <Button
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:text="Looking for delivery"
             android:textSize="18dp"
             android:id="@+id/lookForButton"
@@ -62,7 +62,7 @@
             />
 
         <Button
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="90dp"
             android:text="Logout"
             android:id="@+id/buttonLogOut"
             android:layout_gravity="center_horizontal"

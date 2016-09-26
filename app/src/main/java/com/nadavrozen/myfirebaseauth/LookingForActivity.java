@@ -288,6 +288,7 @@ public class LookingForActivity extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if (v == findButton){
+            v.setBackgroundDrawable(getResources().getDrawable(R.drawable.buttonclick));
             String strOrigin = auto_tvOrigin.getText().toString();
             String strDest = auto_tvDest.getText().toString();
             String desc = shortDesc.getText().toString();
@@ -295,16 +296,19 @@ public class LookingForActivity extends Fragment implements View.OnClickListener
             if (strOrigin.length()==0){
                 Toast.makeText(getActivity(),
                         "please select an origin for the delivery",Toast.LENGTH_SHORT).show();
+                v.setBackgroundDrawable(getResources().getDrawable(R.drawable.buttonshape));
                 return;
             }
             if (strDest.length()==0){
                 Toast.makeText(getActivity(),
                         "please select a destination for the delivery",Toast.LENGTH_SHORT).show();
+                v.setBackgroundDrawable(getResources().getDrawable(R.drawable.buttonshape));
                 return;
             }
             if (desc.length()==0){
                 Toast.makeText(getActivity(),
                         "Please specify what to you want to deliver",Toast.LENGTH_SHORT).show();
+                v.setBackgroundDrawable(getResources().getDrawable(R.drawable.buttonshape));
                 return;
             }
             //writing to database

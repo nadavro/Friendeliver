@@ -295,6 +295,7 @@ public class DeliverActivity extends Fragment implements View.OnClickListener {
 
         }
         if(v == postButton){
+            v.setBackgroundDrawable(getResources().getDrawable(R.drawable.buttonclick));
             String dateStr = date.getText().toString();
             String arriveStr = arrive.getText().toString();
             String departStr = depart.getText().toString();
@@ -303,19 +304,29 @@ public class DeliverActivity extends Fragment implements View.OnClickListener {
 
             if (TextUtils.isEmpty(dateStr)){
                 //date is empty
-
+                Toast.makeText(getActivity(),"Please insert date",Toast.LENGTH_SHORT).show();
+                v.setBackgroundDrawable(getResources().getDrawable(R.drawable.buttonshape));
+                return;
             }
             if(TextUtils.isEmpty(arriveStr)){
-
+                Toast.makeText(getActivity(),"Please insert destination",Toast.LENGTH_SHORT).show();
+                v.setBackgroundDrawable(getResources().getDrawable(R.drawable.buttonshape));
+                return;
             }
             if(TextUtils.isEmpty(departStr)){
-
+                Toast.makeText(getActivity(),"Please insert origin",Toast.LENGTH_SHORT).show();
+                v.setBackgroundDrawable(getResources().getDrawable(R.drawable.buttonshape));
+                return;
             }
             if(TextUtils.isEmpty(arriveAtStr)){
-
+                Toast.makeText(getActivity(),"Please insert time",Toast.LENGTH_SHORT).show();
+                v.setBackgroundDrawable(getResources().getDrawable(R.drawable.buttonshape));
+                return;
             }
             if(TextUtils.isEmpty(departAtStr)){
-
+                Toast.makeText(getActivity(),"Please insert time",Toast.LENGTH_SHORT).show();
+                v.setBackgroundDrawable(getResources().getDrawable(R.drawable.buttonshape));
+                return;
             }
             //Now, we can add new Deliver to the database
             writeNewDeliverUser(dateStr,arriveStr,departStr,
