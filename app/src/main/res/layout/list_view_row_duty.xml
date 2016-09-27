@@ -4,12 +4,37 @@
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:descendantFocusability="blocksDescendants">
+
+
+    <Button
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:text="CANCEL"
+        android:id="@+id/cancel"
+        android:background="@drawable/buttonshape"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="30dp"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:id="@+id/linear"
+        android:gravity="left"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="20dp"
+        android:text="Decline"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/cancel"
+        android:layout_centerVertical="true"
+        >
         <TextView android:id="@+id/txtTitle"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -33,7 +58,6 @@
             android:id="@+id/dateto"/>
 
     </LinearLayout>
-
 
 
 

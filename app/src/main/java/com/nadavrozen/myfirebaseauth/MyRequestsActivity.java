@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -56,7 +57,7 @@ public class MyRequestsActivity extends Fragment {
 //            finish();
 //            startActivity(new Intent(this, ProfileActivity.class));
 //        }
-        System.out.println("dsdsdsdsdjsxxnxnxnxnxnxnxnxnxnxnxnnxxnxnx");
+        //System.out.println("dsdsdsdsdjsxxnxnxnxnxnxnxnxnxnxnxnnxxnxnx");
         String key = firebaseAuth.getCurrentUser().getUid();
         Query query = mDatabase.child("Request").orderByChild("delUserUID").equalTo(key);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -66,7 +67,7 @@ public class MyRequestsActivity extends Fragment {
                 for (DataSnapshot usi : dataSnapshot.getChildren()){
                     Request req = usi.getValue(Request.class);
                     req.setKey(usi.getKey());
-                    System.out.println(req.getStatus());
+                   // System.out.println(req.getStatus());
                     if (req.getStatus().equals("WAITING")){
                         tempReqList.add(req);
                     }
@@ -93,18 +94,34 @@ public class MyRequestsActivity extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
-                View alertLayout = inflater.inflate(R.layout.dialog_my_duties, null);
-                Request current = (Request) parent.getItemAtPosition(position);
+                View alertLayout = inflater.inflate(R.layout.my_request_dialog, null);
+                final Request current = (Request) parent.getItemAtPosition(position);
 
                 TextView what = (TextView) alertLayout.findViewById(R.id.what);
                 TextView specAddressDepart =
                         (TextView) alertLayout.findViewById(R.id.specAddressDepart);
                 TextView specAddressArrive =
                         (TextView) alertLayout.findViewById(R.id.specAddressArive);
+                Button showProfileButton = (Button) alertLayout.findViewById(R.id.showProfiled);
+
 
                 what.setText(current.getLookForUser().getDelivery().getDesc());
                 specAddressDepart.setText(current.getLookForUser().getDelivery().getStrOrigin());
                 specAddressArrive.setText(current.getLookForUser().getDelivery().getStrDest());
+                showProfileButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Fragment fragment = new UserProfile();
+                        final Bundle bundle = new Bundle();
+                        bundle.putParcelable("User",current.getLookForUser().getUser());
+                        bundle.putString("userKey",current.getLookForUser().getUid());
+
+                        fragment.setArguments(bundle);
+                        getFragmentManager().beginTransaction().
+                                setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                                .replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+                    }
+                });
 
                 final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
                 int pos = position + 1;

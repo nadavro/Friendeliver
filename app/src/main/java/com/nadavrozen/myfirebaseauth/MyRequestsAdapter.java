@@ -102,7 +102,9 @@ public class MyRequestsAdapter extends ArrayAdapter<Request> {
             @Override
             public void onClick(View v) {
 
-                Duty duty = new Duty(reqList.get(position).getLookForUser(),delUser);
+                Duty duty = new Duty(reqList.get(position).getLookForUser(),delUser,reqList.get(position).getLookUserID());
+             //   System.out.println("the key is +"+reqList.get(position).getLookUserID());
+                //duty.setLookForUserID(reqList.get(position).getLookForUser().getKey());
                 DatabaseReference newPostRef6 = mDataBase.child("Duty").push();
                 String dutyKey = newPostRef6.getKey();
                 newPostRef6.setValue(duty);

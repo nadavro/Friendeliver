@@ -21,11 +21,12 @@ public class User implements Parcelable {
 
     public User() {}
 
-    public User(String fullName, String birthday ,String email,int isFacebook) {
+    public User(String fullName, String birthday ,String email,int isFacebook,String phone) {
         this.fullName = fullName;
         this.birthday = birthday;
         this.email = email;
         this.isFacebook = isFacebook;
+        this.phone = phone;
     }
 
     public User(User me) {
@@ -33,6 +34,7 @@ public class User implements Parcelable {
         this.birthday = me.birthday;
         this.fullName = me.fullName;
         this.isFacebook=  me.isFacebook;
+        this.phone = me.phone;
     }
 
     protected User(Parcel in) {

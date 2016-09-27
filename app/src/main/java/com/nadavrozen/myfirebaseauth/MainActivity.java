@@ -36,6 +36,8 @@ import java.security.NoSuchAlgorithmException;
 
 import android.content.pm.Signature;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+
     private class NumericKeyBoardTransformationMethod extends PasswordTransformationMethod {
         @Override
         public CharSequence getTransformation(CharSequence source, View view) {
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private EditText phone;
     private Button buttonRegister;
     private EditText firstName,lastName;
     private EditText editTextEmail;
@@ -70,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+               // Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
         } catch (PackageManager.NameNotFoundException e) {
 
@@ -97,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editTextEmail = (EditText)findViewById(R.id.editTextEmail);
         editTextPassword = (EditText)findViewById(R.id.editTextPassword);
         textViewSignin = (TextView)findViewById(R.id.textViewSignin);
+        phone = (EditText)findViewById(R.id.phone);
 
 
         buttonRegister.setOnClickListener(this);
@@ -123,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final String password = editTextPassword.getText().toString().trim();
         final String first = firstName.getText().toString().trim();
         final String last = lastName.getText().toString().trim();
+        final String phoneStr = phone.getText().toString();
         //final String dob = birthday.getText().toString();
         if(TextUtils.isEmpty(first)){
             //first name is empty
@@ -143,7 +148,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //
 //        }
 
-
+        if (TextUtils.isEmpty(phoneStr)){
+            Toast.makeText(this,"Please enter phone number",Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (TextUtils.isEmpty(email)){
             //email field is empty
             Toast.makeText(this,"Please enter email",Toast.LENGTH_SHORT).show();
@@ -164,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onComplete(Task<AuthResult> task) {
                 progressDialog.hide();
                 if (task.isSuccessful()) {
-                    WriteNewUser(task.getResult().getUser(), first + " " + last, "", email);
+                    WriteNewUser(task.getResult().getUser(), first + " " + last, "", email,phoneStr);
 //                    Firebase ref = new Firebase(FIREBASE_URL);
 //                    ref.authWithPassword(email, password, new Firebase.AuthResultHandler() {
 //                        @Override
@@ -190,8 +198,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void WriteNewUser(FirebaseUser user, String name, String dob, String email) {
-        User myUser = new User(name,dob,email, 0);
+    private void WriteNewUser(FirebaseUser user, String name, String dob, String email, String phoneStr) {
+        User myUser = new User(name,dob,email, 0,phoneStr);
         firebaseHelper.save(user,myUser);
 
     }

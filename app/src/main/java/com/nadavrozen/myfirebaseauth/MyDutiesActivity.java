@@ -3,6 +3,7 @@ package com.nadavrozen.myfirebaseauth;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -59,6 +60,7 @@ public class MyDutiesActivity extends Fragment {
                 ArrayList<Duty> dutyArrayList = new ArrayList<Duty>();
                 for (DataSnapshot usi : dataSnapshot.getChildren()){
                     Duty duty = usi.getValue(Duty.class);
+                    duty.setKey(usi.getKey());
                     dutyArrayList.add(duty);
                 }
                 setDuties(dutyArrayList);
@@ -84,18 +86,27 @@ public class MyDutiesActivity extends Fragment {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View alertLayout = inflater.inflate(R.layout.dialog_my_duties, null);
-                Duty current = (Duty) parent.getItemAtPosition(position);
+                final Duty current = (Duty) parent.getItemAtPosition(position);
 
                 TextView what = (TextView)alertLayout.findViewById(R.id.what);
                 TextView specAddressDepart=
                         (TextView)alertLayout.findViewById(R.id.specAddressDepart);
                 TextView specAddressArrive =
                         (TextView)alertLayout.findViewById(R.id.specAddressArive);
+                final TextView phone = (TextView)alertLayout.findViewById(R.id.phone);
 
                 what.setText(current.getLookForUser().getDelivery().getDesc());
                 specAddressDepart.setText(current.getLookForUser().getDelivery().getStrOrigin());
                 specAddressArrive.setText(current.getLookForUser().getDelivery().getStrDest());
-
+                phone.setText(current.getLookForUser().getUser().getPhone());
+                phone.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent  = new Intent(Intent.ACTION_DIAL);
+                        intent.setData(Uri.parse("tel:" + current.getLookForUser().getUser().getPhone()));
+                        startActivity(intent);
+                    }
+                });
                 final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
                 int pos = position+1;
                 alert.setTitle("Delivery #" + pos);

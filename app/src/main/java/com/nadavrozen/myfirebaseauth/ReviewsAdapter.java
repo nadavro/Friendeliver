@@ -11,6 +11,10 @@ import android.widget.TextView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,9 +58,15 @@ public class ReviewsAdapter extends ArrayAdapter<Review> {
         {
             holder = (ReviewHolder)row.getTag();
         }
+        Date date = Calendar.getInstance().getTime();
+        //
+        // Display a date in day, month, year format
+        //
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String today = formatter.format(date);
 
         Review review = revList.get(position);
-        holder.name.setText("Reviewed by " + review.getName());
+        holder.name.setText("Reviewed by " + review.getName()+" , "+today);
         holder.recommendation.setText("\"" + review.getRecommendation() + "\"");
 
 

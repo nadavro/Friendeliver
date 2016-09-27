@@ -58,10 +58,10 @@ public class AsyncUploadImage extends AsyncTask<Object, Object, Object> {
         super.onPostExecute(result);
         if (null != result) {
             iv.setImageBitmap((Bitmap) result);
-            Log.i(TAG, "image download ok！！！");
+
         } else {
             //iv.setBackgroundResource(R.drawable.shuben1);
-            Log.i(TAG, "image download false！！！");
+
         }
     }
 }

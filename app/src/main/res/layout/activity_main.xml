@@ -42,6 +42,7 @@
             android:id="@+id/phoneNumber"
             android:hint="Phone Number:"
             android:layout_margin="15dp"
+            android:inputType="phone"
             />
 
         <EditText

@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,7 @@ public class ProfileActivity extends Fragment implements View.OnClickListener {
         //Firebase.setAndroidContext(this);
 
         textView = (TextView) view.findViewById(R.id.textView2);
-        Typeface custom_font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Aloha.ttf");
+        Typeface custom_font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/PoiretOne-Regular.ttf");
 
         textView.setTypeface(custom_font);
         //Firebase usersRef = new Firebase("https://myfirstfirebaseauth.firebaseio.com");
@@ -105,57 +106,52 @@ public class ProfileActivity extends Fragment implements View.OnClickListener {
         mDatabase.child("User").child(user.getUid()).addValueEventListener(new com.google.firebase.database.ValueEventListener() {
             @Override
             public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
-                System.out.println("innnnn profileeeeeeeeee");
+               // System.out.println("innnnn profileeeeeeeeee");
                User me = dataSnapshot.getValue(User.class);
 
                 userName = me.getFullName();
-                if(me.getBirthday()==""){
-                    System.out.println("birthday");
-//                    DatabaseReference r = mDatabase.child("User").child(key).child("birthday");
-//                    r.setValue("1987");
+
+
+                if (me.getPhone().equals("")) {
+                    //System.out.println("phone");
+
+                    final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity(), R.style.MyAlertDialogStyle);
+                    dialogBuilder.setMessage("Please enter your phone number");
+
+                    LayoutInflater inflater = getActivity().getLayoutInflater();
+
+                    View dialogView = inflater.inflate(R.layout.phone_dialog, null);
+                    dialogBuilder.setView(dialogView);
+
+                    TextView title = new TextView(getActivity());
+                    title.setText("ENTER PHONE ");
+                    title.setBackgroundColor(getResources().getColor(R.color.yellow_header));
+                    title.setPadding(10, 10, 10, 10);
+                    title.setGravity(Gravity.CENTER);
+                    title.setTextColor(Color.BLACK);
+                    title.setTextSize(20);
+
+                    dialogBuilder.setCustomTitle(title);
+
+                    final EditText editText = (EditText) dialogView.findViewById(R.id.phone);
+
+
+                    dialogBuilder.setPositiveButton("DONE", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String f = String.valueOf(editText.getText());
+                            DatabaseReference r = mDatabase.child("User").child(key).child("phone");
+                            r.setValue(f);
+
+                        }
+                    });
+
+
+                    AlertDialog d = dialogBuilder.create();
+                    d.show();
                 }
-
-                if (me.getPhone().equals("")){
-                    System.out.println("phone");
-//                    final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity(),R.style.MyAlertDialogStyle);
-//                    dialogBuilder.setTitle("ENTER PHONE").setMessage("Please enter your phone number");
-//
-//                    LayoutInflater inflater = getActivity().getLayoutInflater();
-//
-//                    View dialogView = inflater.inflate(R.layout.phone_dialog, null);
-//                    dialogBuilder.setView(dialogView);
-//                    final EditText editText = (EditText) dialogView.findViewById(R.id.phone);
-//
-//                    //System.out.println(f);
-////                    DatabaseReference r = mDatabase.child("User").child(key).child("phone");
-////                    r.setValue("93939393");
-//                    dialogBuilder.setPositiveButton("DONE", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            String f = String.valueOf(editText.getText());
-//                            DatabaseReference r = mDatabase.child("User").child(key).child("phone");
-//                            r.setValue(f);
-//
-//                        }
-//                    });
-
-                   // dialogBuilder.setView(dialogView);
-                    //dialogBuilder.setPositiveButton("DONE",ne)
-
-
-
-
-//                    editText.setText("Please enter phone number");
-//                    AlertDialog alertDialog = dialogBuilder.create();
-//                    alertDialog.show();
-
-
-                }
-
-                //uri.setText(me.getFullName());
-
-                //textView.setText("Welcome " + s);
             }
+
 
             @Override
             public void onCancelled(DatabaseError databaseError) {

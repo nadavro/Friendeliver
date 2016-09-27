@@ -27,8 +27,7 @@ public class MyEditTextDatePicker implements View.OnClickListener, DatePickerDia
 
     public MyEditTextDatePicker(Context context, int editTextViewID)
     {
-        Log.v("hereee",String.valueOf(editTextViewID));
-        Log.v("HERE","HAHAHAHA");
+
         Activity act = (Activity)context;
         this._editText = (EditText)act.findViewById(editTextViewID);
         this._editText.setOnClickListener(this);

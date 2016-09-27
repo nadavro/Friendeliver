@@ -68,10 +68,10 @@ public class SendNotification {
                     int success, failure;
                     success = resultJson.getInt("success");
                     failure = resultJson.getInt("failure");
-                    System.out.println( "Message Success: " + success + "Message Failed: " + failure);
+                   // System.out.println( "Message Success: " + success + "Message Failed: " + failure);
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    System.out.println( "Message Failed, Unknown error occurred.");
+                   // System.out.println( "Message Failed, Unknown error occurred.");
                 }
             }
         }.execute();

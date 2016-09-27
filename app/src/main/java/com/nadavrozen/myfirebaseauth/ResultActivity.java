@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,6 +41,8 @@ public class ResultActivity extends Fragment {
     private LookForUser lookUser;
     private FragmentManager fragmentManager;
     private ProgressDialog progressDialog;
+    private FirebaseAuth firebaseAuth;
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_result, container, false);
@@ -47,9 +51,12 @@ public class ResultActivity extends Fragment {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_result);
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        final String userUid = user.getUid();
         listView = (ListView)view.findViewById(R.id.myListView);
 
-        System.out.println("in resultActivity");
+       // System.out.println("in resultActivity");
 
         //Getting the delivery object from the other activity
         Bundle extras = this.getArguments();
@@ -94,7 +101,10 @@ public class ResultActivity extends Fragment {
                     DeliverUser del = usi.getValue(DeliverUser.class);
                     del.setKey(usi.getKey());
                     //System.out.println("in result ");
-                    l.add(del);
+                    if (!(del.getUid().equals(userUid))){
+                        l.add(del);
+                    }
+
 
                 }
                 setDeliverList(l);

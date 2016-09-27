@@ -12,8 +12,8 @@
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="43dp"
         android:layout_marginBottom="5dp"
         android:background="@drawable/buttonshape"
         android:text="ASK"
@@ -22,7 +22,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="35dp"
+        >
 
         <TextView android:id="@+id/txtTitle"
             android:layout_width="fill_parent"

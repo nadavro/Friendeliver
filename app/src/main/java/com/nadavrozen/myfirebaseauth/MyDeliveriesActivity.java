@@ -89,7 +89,7 @@ public class MyDeliveriesActivity extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapter, View arg1,
                                            int position, long id) {
-                System.out.println("UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
+
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View alertLayout = inflater.inflate(R.layout.my_deliveries_dialog, null);
                 LookForUser current = (LookForUser) adapter.getItemAtPosition(position);
@@ -118,7 +118,7 @@ public class MyDeliveriesActivity extends Fragment {
                 else
                 {
 
-                    System.out.println("GREEN " + current.getUid());
+
                     status.setTextColor(Color.parseColor("green"));
 
                     cont(deluid, alertLayout, position, current); // accepted deliveries
@@ -157,7 +157,7 @@ public class MyDeliveriesActivity extends Fragment {
 
 
     private void cont(String current, final View alertLayout, final int position, final LookForUser lookForUser) {
-        System.out.println("IN CONT+" + lookForUser.getUid());
+
         DatabaseReference refi = mDatabase.child("DeliverUser").
                 child(current);
         refi.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -229,7 +229,7 @@ public class MyDeliveriesActivity extends Fragment {
                         //remove from delivery
                         //DatabaseReference s = mDatabase.child("Delivery").child(lookForUser.getDelivery().getKey());
                         //s.removeValue();
-                        System.out.println(lookForUser.getKey());
+
                         DatabaseReference q = mDatabase.child("LookForUser").child(lookForUser.getKey());
                         q.removeValue();
                         DatabaseReference t = mDatabase.child("Duty").child(lookForUser.getDutyId());

@@ -111,7 +111,7 @@ public class DeliverAdapter extends ArrayAdapter<DeliverUser> {
 
                                         //Noitify the deliverUser about the request
 
-                                        System.out.println("kakakamamamakakakakakakaka");
+
                                         SendNotification sendNotification = new SendNotification();
                                         sendNotification.sendMessage(objects[position].getUser().getFcmToken(),
                                                 "FrienDeliver","New request from "+lookForUser.getUser().getFullName(),"FrienDeliver","message");

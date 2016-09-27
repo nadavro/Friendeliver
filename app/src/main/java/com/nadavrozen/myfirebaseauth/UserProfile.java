@@ -70,16 +70,11 @@ public class UserProfile extends Fragment {
         String name = currentUser.getFullName();
         String email = currentUser.getEmail();
         if(currentUser.getIsFacebook()==1){
-            //System.out.println("is facecbook");
             String photoUrl = currentUser.getUriImage();
             linkView.setVisibility(View.VISIBLE);
-//            Uri uri = Uri.parse(photoUrl);
-//            imgView.setImageURI(null);
-//            imgView.setImageURI(uri);
             new AsyncUploadImage(imgView).execute(photoUrl);
             final String facebookLink = currentUser.getFacebookLink();
 
-            //linkView.setText("Facebook link");
             linkView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -91,9 +86,17 @@ public class UserProfile extends Fragment {
         }
 
 
-        String phone = currentUser.getPhone();
+        final String phone = currentUser.getPhone();
 
-
+        phoneView.setText(phone);
+        phoneView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent  = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:"+phone));
+                startActivity(intent);
+            }
+        });
         nameView.setText(name);
         emailView.setText(email);
 

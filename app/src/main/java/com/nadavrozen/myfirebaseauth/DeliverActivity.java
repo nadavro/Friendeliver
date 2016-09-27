@@ -15,6 +15,7 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -196,14 +197,14 @@ public class DeliverActivity extends Fragment implements View.OnClickListener {
 
                 try {
 
-                    Log.v("HERE",response.toString());
+
                     JSONArray ja = response.getJSONArray(TAG_RESULT);
 
                     for (int i = 0; i < ja.length(); i++) {
                         //--???----
                         JSONObject c = ja.getJSONObject(i);
                         String description = c.getString("description");
-                        Log.d("description", description);
+
                         names.add(description);
                     }
 
@@ -359,17 +360,34 @@ public class DeliverActivity extends Fragment implements View.OnClickListener {
         DatabaseReference d =   mDatabase.child("DeliverUser").push();
         String delKey = d.getKey();
         deliverUser.setKey(delKey);
-        System.out.println("tititititittititi" + deliverUser.getKey());
+
         d.setValue(deliverUser);
 
-        new AlertDialog.Builder(getActivity(),R.style.MyAlertDialogStyle)
-                .setTitle("Thank you!").setMessage("Now, Other people can ask you for picking-up their" +
-                " things. Have a safe drive!").setNeutralButton("OK", new DialogInterface.OnClickListener() {
+
+
+
+
+
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity(),R.style.MyAlertDialogStyle);
+        TextView title = new TextView(getActivity());
+        title.setText("THANK YOU!");
+        title.setBackgroundColor(getResources().getColor(R.color.yellow_header));
+        title.setPadding(10, 10, 10, 10);
+        title.setGravity(Gravity.CENTER);
+        title.setTextColor(Color.BLACK);
+        title.setTextSize(20);
+        builder1.setCustomTitle(title);
+        builder1.setMessage("Now, Other people can ask you for picking-up their things. Have a safe drive!");
+        builder1.setNeutralButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
             }
         }).show();
+
+
+
+
 
 
 
