@@ -44,7 +44,7 @@
             android:ems="10"
             android:text="" />
         <TextView
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="33dp"
             android:textSize="20sp"
             android:text="What?"
             android:id="@+id/descriptionTextView"

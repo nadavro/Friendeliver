@@ -59,6 +59,7 @@
             android:layout_height="30dp"
             android:id="@+id/facebook"
             android:src="@drawable/facebooklogo"
+            android:visibility="gone"
 
             />
 

@@ -86,14 +86,17 @@ public class UserProfile extends Fragment {
         }
 
 
-        final String phone = currentUser.getPhone();
-
+        String phone = currentUser.getPhone();
         phoneView.setText(phone);
+
+        final String k = phone;
+
+        //phoneView.setText(phone);
         phoneView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent  = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:"+phone));
+                intent.setData(Uri.parse("tel:"+k));
                 startActivity(intent);
             }
         });

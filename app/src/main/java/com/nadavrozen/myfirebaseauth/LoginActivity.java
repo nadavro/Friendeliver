@@ -153,6 +153,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Uri imageUri = user.getPhotoUrl();
 
 
+
                         //Profile.getCurrentProfile().getLinkUri().toString()
                         // 1 -> is from facebook login
                         // 0 -> from regular login
